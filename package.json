@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index.js",
     "start": "node index.js"
   },
   "repository": {
@@ -11,5 +12,8 @@
     "url": "git+https://github.com/Eloi-Perez/ecommerce-node-backend.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "2.0.19"
+  }
 }
