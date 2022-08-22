@@ -9,7 +9,7 @@ router.post('/login', userControllers.loginUser)
 router.post('/logout', userControllers.logoutUser)
 router.put('/update', userControllers.updateUser)
 router.put('/disable', userControllers.disableUser)
-router.delete('/delete', userControllers.deleteUser)
+router.delete('/delete', userControllers.deleteUser) //only admin
 // router.delete('/', checkAuth, userControllers.deleteUser)
 
 module.exports = router

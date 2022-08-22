@@ -31,61 +31,86 @@ const loginUser = asyncHandler(async (req, res) => {
 
 })
 
-//Logout?
+//Logout
 const logoutUser = asyncHandler(async (req, res) => {
 
 })
 
 //Update User Details
 const updateUser = asyncHandler(async (req, res) => {
-    // const { email, password, newName, newSurname, newEmail, newPassword } = req.body
-    // let hashedPassword;
-    // if (newPassword) {
-    //     hashedPassword = User.hashPassword(newPassword)
-    // }
-    // User.findOneAndUpdate(
-    //     { email: email },
-    //     {
-    //         $set: {
-    //             name: newName,
-    //             surname: newSurname,
-    //             email: newEmail,
-    //             password: hashedPassword,
-    //         },
-    //     },
-    //     { new: true, omitUndefined: true },
-    //     (err, updatedUser) => {
-    //         if (err) {
-    //             console.error(err);
-    //             res.status(500).json({ err })
-    //         } else {
-    //             if (updatedUser) {
-    //                 res.status(200).json({
-    //                     message: "Updated Successfully",
-    //                     email: updatedUser.email,
-    //                 });
-    //             } else {
-    //                 res.status(400).json({ message: email + " was not found" })
-    //             }
-    //         }
-    //     }
-    // )
+    const { email, password, newName, newSurname, newEmail, newPassword } = req.body
+    let hashedPassword;
+    if (newPassword) {
+        hashedPassword = User.hashPassword(newPassword)
+    }
+    User.findOneAndUpdate(
+        { email: email },
+        {
+            $set: {
+                name: newName,
+                surname: newSurname,
+                email: newEmail,
+                password: hashedPassword,
+            },
+        },
+        { new: true, omitUndefined: true },
+        (err, updatedUser) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ err })
+            } else {
+                if (updatedUser) {
+                    res.status(200).json({
+                        message: "Updated Successfully",
+                        email: updatedUser.email,
+                    });
+                } else {
+                    res.status(400).json({ message: email + " was not found" })
+                }
+            }
+        }
+    )
 })
 
 //Disable User
 const disableUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body
+    User.findOneAndUpdate(
+        { email: email },
+        {
+            $set: {
+                active: false,
+            },
+        },
+        { new: true, omitUndefined: true },
+        (err, updatedUser) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ err })
+            } else {
+                if (updatedUser) {
+                    res.status(200).json({
+                        message: "Account 'deleted' (disabled)",
+                        email: updatedUser.email,
+                    });
+                } else {
+                    res.status(400).json({ message: email + " was not found" })
+                }
+            }
+        }
+    )
 
 })
 
 //Delete User
 const deleteUser = async (req, res) => {
-    // const { email } = req.params
-    // try {
-    //     await User.findOneAndRemove({ email })
-    //     res.status(300).json({ message: 'User removed' })
-    // } catch (error) {
-    //     res.status(400).json({ message: error })
-    // }
+    const { email, password } = req.body
+    try {
+        await User.findOneAndRemove({ email: email })
+        res.status(200).json({ message: 'User removed' })
+    } catch (error) {
+        res.status(400).json({ message: error })
+    }
 }
 
 module.exports = {
