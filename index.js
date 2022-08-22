@@ -5,7 +5,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const app = express()
 
-// const usersRouter = require('./routes/users')
+const usersRouter = require('./routes/users')
 const productsRouter = require('./routes/products')
 
 mongoose
@@ -22,7 +22,7 @@ app.use(cors())
 app.use(express.json())
 
 
-// app.use('/users', usersRouter)
+app.use('/users', usersRouter)
 app.use('/products', productsRouter)
 
 const PORT = process.env.PORT || 3000
