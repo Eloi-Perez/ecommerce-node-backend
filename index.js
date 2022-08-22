@@ -9,7 +9,7 @@ const app = express()
 const productsRouter = require('./routes/products')
 
 mongoose
-  .connect(process.env.CONNECTION_URI, {})
+  .connect(process.env.MONGODB_URI, {})
   .then(() => {
     console.log('MongoDB connection is successful')
   })
