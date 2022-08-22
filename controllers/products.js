@@ -7,9 +7,9 @@ const getProduct = asyncHandler(async (req, res) => {
 
   try {
     const oneProduct = await Product.findById(id)
-    req.status(200).json(oneProduct)
+    res.status(200).json(oneProduct)
   } catch (error) {
-    req.status(400).json(error)
+    res.status(400).json(error)
   }
 })
 
