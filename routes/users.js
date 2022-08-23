@@ -1,7 +1,5 @@
 const express = require('express')
-// const passport = require('passport')
 
-// require("../utils/auth")
 const midd = require('../middlewares/middlewares')
 const cont = require('../controllers/users')
 
