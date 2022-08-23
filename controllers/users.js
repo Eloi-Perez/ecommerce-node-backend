@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler')
-const User = require('../models/user')
 
+const User = require('../models/user')
+const helper = require('../utils/helper')
+const generateJWT = helper.generateJWT
 
 //Register User
 const registerUser = asyncHandler(async (req, res) => {
@@ -11,8 +13,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
     try {
         User.findOne({ email: email })
-            .then((email) => {
-                if (email) {
+            .then((user) => {
+                if (user) {
                     return res.status(400).json({
                         message: "Email already taken",
                     });
@@ -28,7 +30,17 @@ const registerUser = asyncHandler(async (req, res) => {
 
 //Login User
 const loginUser = asyncHandler(async (req, res) => {
-
+    const user = res.locals.user
+    req.login(user, { session: false }, (error) => {
+        if (error) {
+            res.json({ Error: error })
+        }
+        let payload = {}
+        payload._id = user._id;
+        payload.email = user.email
+        let token = generateJWT(payload)
+        return res.json({ email: user.email, token })
+    })
 })
 
 //Logout

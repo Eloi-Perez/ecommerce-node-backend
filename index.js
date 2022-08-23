@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const passport = require('passport')
 const app = express()
 
 const usersRouter = require('./routes/users')
@@ -20,6 +21,7 @@ mongoose
 
 app.use(cors())
 app.use(express.json())
+app.use(passport.initialize())
 
 
 app.use('/users', usersRouter)

@@ -8,28 +8,28 @@ const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
 
 passport.use(new LocalStrategy({
-	emailField: 'email',
+	usernameField: 'email',
 	passwordField: 'password'
 }, (email, password, callback) => {
 	console.log('Logging in: ' + email);
-	User.findOne({ email: email }, (error, email) => {
+	User.findOne({ email: email }, (error, user) => {
 		if (error) {
 			console.log(error)
 			return callback(error)
 		}
 
-		if (!email) {
+		if (!user) {
 			console.log('incorrect user')
-			return callback(null, false, { message: 'Incorrect user.' })
+			return callback(null, false, { message: 'incorrect user' })
 		}
 
-		if (!email.validatePassword(password)) {
+		if (!user.validatePassword(password)) {
 			console.log('incorrect password')
-			return callback(null, false, { message: 'Incorrect password.' })
+			return callback(null, false, { message: 'incorrect password' })
 		}
 
 		console.log('finished login')
-		return callback(null, email)
+		return callback(null, user)
 	})
 }))
 
@@ -38,8 +38,8 @@ passport.use(new JWTStrategy({
 	secretOrKey: process.env.JWT_KEY
 }, (jwtPayload, callback) => {
 	return User.findById(jwtPayload._id)
-		.then((email) => {
-			return callback(null, email)
+		.then((user) => {
+			return callback(null, user)
 		})
 		.catch((error) => {
 			return callback(error)

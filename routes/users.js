@@ -1,15 +1,17 @@
 const express = require('express')
-// const checkAuth = require('../middleware/checkAuth')
-const userControllers = require('../controllers/users')
+// const passport = require('passport')
+
+// require("../utils/auth")
+const midd = require('../middlewares/middlewares')
+const cont = require('../controllers/users')
 
 const router = express.Router()
 
-router.post('/signup', userControllers.registerUser)
-router.post('/login', userControllers.loginUser)
-router.post('/logout', userControllers.logoutUser)
-router.put('/update', userControllers.updateUser)
-router.put('/disable', userControllers.disableUser)
-router.delete('/delete', userControllers.deleteUser) //only admin
-// router.delete('/', checkAuth, userControllers.deleteUser)
+router.post('/signup', cont.registerUser)
+router.post('/login', midd.localAuth, cont.loginUser)
+router.post('/logout', cont.logoutUser)
+router.put('/update', cont.updateUser)
+router.put('/disable', cont.disableUser)
+router.delete('/delete', cont.deleteUser) //only admin
 
 module.exports = router
