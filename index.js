@@ -3,9 +3,10 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const passport = require('passport')
 const app = express()
 
-// const usersRouter = require('./routes/users')
+const usersRouter = require('./routes/users')
 const productsRouter = require('./routes/products')
 
 mongoose
@@ -20,9 +21,10 @@ mongoose
 
 app.use(cors())
 app.use(express.json())
+app.use(passport.initialize())
 
 
-// app.use('/users', usersRouter)
+app.use('/users', usersRouter)
 app.use('/products', productsRouter)
 
 const PORT = process.env.PORT || 3000
