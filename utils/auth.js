@@ -44,6 +44,10 @@ passport.use(new JWTStrategy({
 }, (jwtPayload, callback) => {
 	return User.findById(jwtPayload._id)
 		.then((user) => {
+			if (!user.active) {
+				console.log('disabled user')
+				return callback(null, false, { message: 'your user has been disabled' })
+			}
 			return callback(null, user)
 		})
 		.catch((error) => {
