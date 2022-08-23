@@ -115,7 +115,7 @@ const disableUser = asyncHandler(async (req, res) => {
 
 //Delete User
 const deleteUser = async (req, res) => {
-    const { email, password } = req.body
+    const { email } = req.body
     try {
         await User.findOneAndRemove({ email: email })
         res.status(200).json({ message: 'User removed' })

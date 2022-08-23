@@ -1,8 +1,6 @@
 const express = require('express')
-const router = express.Router()
 
-//add auth after testing
-// const checkAuth = require('../middleware/checkAuth')
+const { jwtAuth, jwtAdminAuth } = require('../middlewares/middlewares')
 const {
   getProduct,
   getAllProducts,
@@ -11,15 +9,15 @@ const {
   deleteProduct
 } = require('../controllers/products')
 
+const router = express.Router()
+
+//Public routes
 router.get('/', getAllProducts)
 router.get('/:id', getProduct)
 
-//Admin Auth
-router.post('/add', createProduct)
-router.put('/:id', updateProduct)
-router.delete('/:id', deleteProduct)
-// router.post('/add', checkAuth, createProduct)
-// router.put('/:id', checkAuth, updateProduct)
-// router.delete('/:id', checkAuth, deleteProduct)
+//Admin routes
+router.post('/add', jwtAdminAuth, createProduct)
+router.put('/:id', jwtAdminAuth, updateProduct)
+router.delete('/:id', jwtAdminAuth, deleteProduct)
 
 module.exports = router
