@@ -44,9 +44,8 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 //Logout
-const logoutUser = asyncHandler(async (req, res) => {
-
-})
+// const logoutUser = asyncHandler(async (req, res) => {
+// })
 
 //Update User Details
 const updateUser = asyncHandler(async (req, res) => {
@@ -128,7 +127,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
     registerUser,
     loginUser,
-    logoutUser,
+    // logoutUser,
     updateUser,
     disableUser,
     deleteUser
