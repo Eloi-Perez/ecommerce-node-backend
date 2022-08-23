@@ -28,6 +28,11 @@ passport.use(new LocalStrategy({
 			return callback(null, false, { message: 'incorrect password' })
 		}
 
+		if (!user.active) {
+			console.log('disabled user')
+			return callback(null, false, { message: 'incorrect user' })
+		}
+
 		console.log('finished login')
 		return callback(null, user)
 	})
