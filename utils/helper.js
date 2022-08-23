@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken")
+const jwt = require('jsonwebtoken')
 
 module.exports.generateJWT = (payload) => {
 	return jwt.sign(payload, process.env.JWT_KEY, {
