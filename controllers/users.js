@@ -17,7 +17,7 @@ const registerUser = asyncHandler(async (req, res) => {
                 if (user) {
                     return res.status(400).json({
                         message: "Email already taken",
-                    });
+                    })
                 } else {
                     newUser.save()
                     res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email })
@@ -36,7 +36,7 @@ const loginUser = asyncHandler(async (req, res) => {
             res.json({ Error: error })
         }
         let payload = {}
-        payload._id = user._id;
+        payload._id = user._id
         payload.email = user.email
         let token = generateJWT(payload)
         return res.json({ email: user.email, token })
@@ -50,7 +50,7 @@ const loginUser = asyncHandler(async (req, res) => {
 //Update User Details
 const updateUser = asyncHandler(async (req, res) => {
     const { email, password, newName, newSurname, newEmail, newPassword } = req.body
-    let hashedPassword;
+    let hashedPassword
     if (newPassword) {
         hashedPassword = User.hashPassword(newPassword)
     }
@@ -67,14 +67,14 @@ const updateUser = asyncHandler(async (req, res) => {
         { new: true, omitUndefined: true },
         (err, updatedUser) => {
             if (err) {
-                console.error(err);
+                console.error(err)
                 res.status(500).json({ err })
             } else {
                 if (updatedUser) {
                     res.status(200).json({
                         message: "Updated Successfully",
                         email: updatedUser.email,
-                    });
+                    })
                 } else {
                     res.status(400).json({ message: email + " was not found" })
                 }
@@ -96,14 +96,14 @@ const disableUser = asyncHandler(async (req, res) => {
         { new: true, omitUndefined: true },
         (err, updatedUser) => {
             if (err) {
-                console.error(err);
+                console.error(err)
                 res.status(500).json({ err })
             } else {
                 if (updatedUser) {
                     res.status(200).json({
                         message: "Account 'deleted' (disabled)",
                         email: updatedUser.email,
-                    });
+                    })
                 } else {
                     res.status(400).json({ message: email + " was not found" })
                 }
