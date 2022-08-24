@@ -18,6 +18,7 @@ module.exports.jwtAuth = (req, res, next) => {
         if (error || !user) {
             return res.status(400).json(info)
         } else {
+            res.locals.user = user
             next()
         }
     })(req, res)
@@ -30,6 +31,7 @@ module.exports.jwtAdminAuth = (req, res, next) => {
         } else if (!user.admin) {
             return res.status(400).json({ message: "not authorized" })
         } else {
+            res.locals.user = user
             next()
         }
     })(req, res)
@@ -37,9 +39,9 @@ module.exports.jwtAdminAuth = (req, res, next) => {
 
 
 
-///Compare Passport User and URL :User
+//Compare JWT User and URL User id, so users can't see other users details
 module.exports.checkUser = (req, res, next) => {
-    if (req.user.Username === req.params.Username) {
+    if (res.locals.user._id === req.params.id) {
         next()
     } else {
         return res.status(401).json({ error: "Unauthorized" })

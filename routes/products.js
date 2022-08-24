@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { jwtAuth, jwtAdminAuth } = require('../middlewares/middlewares')
+const { jwtAdminAuth } = require('../middlewares/auth')
 const {
   getProduct,
   getAllProducts,
