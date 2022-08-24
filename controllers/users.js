@@ -1,8 +1,7 @@
 const asyncHandler = require('express-async-handler')
 
 const User = require('../models/user')
-const helper = require('../utils/helper')
-const generateJWT = helper.generateJWT
+const { generateJWT } = require('../utils/helper')
 
 //Register User
 const registerUser = asyncHandler(async (req, res) => {
