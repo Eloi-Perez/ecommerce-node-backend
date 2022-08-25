@@ -41,7 +41,7 @@ module.exports.jwtAdminAuth = (req, res, next) => {
 
 //Compare JWT User and URL User id, so users can't see other users details
 module.exports.checkUser = (req, res, next) => {
-    if (res.locals.user._id === req.params.id) {
+    if (res.locals.user._id.toString() === req.params.id) {
         next()
     } else {
         return res.status(401).json({ error: "Unauthorized" })
