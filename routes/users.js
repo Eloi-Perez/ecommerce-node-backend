@@ -1,12 +1,12 @@
 const express = require('express')
 
 const { localAuth, jwtAuth, jwtAdminAuth, checkUser } = require('../middlewares/auth')
-const { registerUser, loginUser, updateUser, disableUser, deleteUser } = require('../controllers/users')
+const { getUser, getAllUsers, registerUser, loginUser, updateUser, disableUser, deleteUser } = require('../controllers/users')
 
 const router = express.Router()
 
 //User routes
-// router.get('/:id', jwtAuth, checkUser, getUser)
+router.get('/:id', jwtAuth, checkUser, getUser)
 router.post('/signup', registerUser)
 router.post('/login', localAuth, loginUser)
 // router.post('/logout', jwtAuth, logoutUser)
@@ -15,8 +15,8 @@ router.put('/disable', localAuth, disableUser)
 
 
 //Admin routes
-// router.get('/', jwtAdminAuth, getAllUsers)
-// router.get('/admin/:id', jwtAdminAuth, getUser)
+router.get('/', jwtAdminAuth, getAllUsers)
+router.get('/admin/:id', jwtAdminAuth, getUser)
 router.put('/admin/update', jwtAdminAuth, updateUser)
 router.put('/admin/disable', jwtAdminAuth, disableUser)
 router.delete('/admin/delete', jwtAdminAuth, deleteUser)

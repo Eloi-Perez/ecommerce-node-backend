@@ -3,6 +3,32 @@ const asyncHandler = require('express-async-handler')
 const User = require('../models/user')
 const { generateJWT } = require('../utils/helper')
 
+//Get user
+const getUser = asyncHandler(async (req, res) => {
+  const { id } = req.params
+  try {
+    const user = await User.findById(id)
+    res.status(200).json({ 
+        id: user._id,
+        name: user.name,
+        surname: user.surname,
+        email: user.email
+    })
+  } catch (error) {
+    res.status(400).json(error)
+  }
+})
+
+//Get all users (only Admin)
+const getAllUsers = asyncHandler(async (req, res) => {
+  try {
+    const allUsers = await User.find()
+    res.status(200).json(allUsers)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+})
+
 //Register User
 const registerUser = asyncHandler(async (req, res) => {
     const { name, surname, email, password } = req.body
@@ -124,6 +150,8 @@ const deleteUser = async (req, res) => {
 }
 
 module.exports = {
+    getUser,
+    getAllUsers,
     registerUser,
     loginUser,
     // logoutUser,
