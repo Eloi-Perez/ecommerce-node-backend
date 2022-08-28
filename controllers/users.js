@@ -89,7 +89,7 @@ const updateUser = asyncHandler(async (req, res) => {
                 password: hashedPassword,
             },
         },
-        { new: true, omitUndefined: true },
+        { new: true },
         (err, updatedUser) => {
             if (err) {
                 console.error(err)
@@ -118,7 +118,7 @@ const disableUser = asyncHandler(async (req, res) => {
                 active: false,
             },
         },
-        { new: true, omitUndefined: true },
+        { new: true },
         (err, updatedUser) => {
             if (err) {
                 console.error(err)
