@@ -1,17 +1,6 @@
 const nodemailer = require('nodemailer')
 
-// const escapeHTML = str =>
-//     str.replace(
-//         /[&<>'"]/g,
-//         tag =>
-//         ({
-//             '&': '&amp;',
-//             '<': '&lt;',
-//             '>': '&gt;',
-//             "'": '&#39;',
-//             '"': '&quot;'
-//         }[tag] || tag)
-//     );
+const html = require('./html-template')
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -23,8 +12,7 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-
-module.exports = sendEmail = async (email) => {
+const sendEmail = async (email, safe) => {
 
     const mailData = {
         from: `Ecommerce-Node-Backend Email Test<${process.env.EMAIL}>`,
@@ -35,7 +23,7 @@ module.exports = sendEmail = async (email) => {
         // },
         subject: email.subject,
         text: email.message, // plain text version of the message
-        // html: /*html*/``
+        html: html(email.subject, email.message, safe)
     }
 
     return new Promise((resolve, reject) => {
@@ -53,3 +41,4 @@ module.exports = sendEmail = async (email) => {
 
 }
 
+module.exports = sendEmail
