@@ -5,28 +5,28 @@ const { generateJWT } = require('../utils/helper')
 
 //Get user
 const getUser = asyncHandler(async (req, res) => {
-  const { id } = req.params
-  try {
-    const user = await User.findById(id)
-    res.status(200).json({ 
-        id: user._id,
-        name: user.name,
-        surname: user.surname,
-        email: user.email
-    })
-  } catch (error) {
-    res.status(400).json(error)
-  }
+    const { id } = req.params
+    try {
+        const user = await User.findById(id)
+        res.status(200).json({
+            id: user._id,
+            name: user.name,
+            surname: user.surname,
+            email: user.email
+        })
+    } catch (error) {
+        res.status(400).json(error)
+    }
 })
 
 //Get all users (only Admin)
 const getAllUsers = asyncHandler(async (req, res) => {
-  try {
-    const allUsers = await User.find()
-    res.status(200).json(allUsers)
-  } catch (error) {
-    res.status(400).json(error)
-  }
+    try {
+        const allUsers = await User.find()
+        res.status(200).json(allUsers)
+    } catch (error) {
+        res.status(400).json(error)
+    }
 })
 
 //Register User
@@ -139,15 +139,20 @@ const disableUser = asyncHandler(async (req, res) => {
 })
 
 //Delete User
-const deleteUser = async (req, res) => {
+const deleteUser = asyncHandler(async (req, res) => {
     const { email } = req.body
     try {
-        await User.findOneAndRemove({ email: email })
-        res.status(200).json({ message: 'User removed' })
+        const user = await User.findOneAndRemove({ email: email })
+        if (user) {
+            res.status(200).json({ message: 'User removed' })
+        } else {
+            res.status(400).json({ message: 'User not found' })
+        }
+
     } catch (error) {
         res.status(400).json({ message: error })
     }
-}
+})
 
 module.exports = {
     getUser,
