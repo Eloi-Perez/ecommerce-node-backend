@@ -68,10 +68,6 @@ const loginUser = asyncHandler(async (req, res) => {
     })
 })
 
-//Logout
-// const logoutUser = asyncHandler(async (req, res) => {
-// })
-
 //Update User Details
 const updateUser = asyncHandler(async (req, res) => {
     const { email, password, newName, newSurname, newEmail, newPassword } = req.body
@@ -148,7 +144,6 @@ const deleteUser = asyncHandler(async (req, res) => {
         } else {
             res.status(400).json({ message: 'User not found' })
         }
-
     } catch (error) {
         res.status(400).json({ message: error })
     }
@@ -159,7 +154,6 @@ module.exports = {
     getAllUsers,
     registerUser,
     loginUser,
-    // logoutUser,
     updateUser,
     disableUser,
     deleteUser
