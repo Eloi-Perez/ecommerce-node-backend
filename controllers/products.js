@@ -40,23 +40,32 @@ const createProduct = asyncHandler(async (req, res) => {
 
 //UPDATE ONE PRODUCT
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, image, description, price, id } = req.body
-  const product = await Product.findById(req.params.id)
-  if (product) {
-    product.name = name
-    product.image = image
-    product.description = description
-    product.price = price
-    product.id = id
-    try {
-      const updatedProduct = await product.save()
-      res.status(200).json(updatedProduct)
-    } catch (error) {
-      res.status(400).json(error)
+  const { name, image, description, price } = req.body
+  Product.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: {
+        name: name,
+        price: price,
+        image: image,
+        description: description,
+        
+      },
+    },
+    { new: true },
+    (err, updatedProduct) => {
+      if (err) {
+        console.error(err)
+        res.status(500).json({ err })
+      } else {
+        if (updatedProduct) {
+          res.status(200).json(updatedProduct)
+        } else {
+          res.status(400).json({ message: req.params.id + ' was not found' })
+        }
+      }
     }
-  } else {
-    res.status(400).json({ message: 'Product not found' })
-  }
+  )
 })
 
 //DELETE ONE PRODUCT
