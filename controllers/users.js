@@ -41,7 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
             .then((user) => {
                 if (user) {
                     return res.status(400).json({
-                        message: "Email already taken",
+                        message: 'Email already taken',
                     })
                 } else {
                     newUser.save()
@@ -93,11 +93,11 @@ const updateUser = asyncHandler(async (req, res) => {
             } else {
                 if (updatedUser) {
                     res.status(200).json({
-                        message: "Updated Successfully",
+                        message: 'Updated Successfully',
                         email: updatedUser.email,
                     })
                 } else {
-                    res.status(400).json({ message: email + " was not found" })
+                    res.status(400).json({ message: email + ' was not found' })
                 }
             }
         }
@@ -126,7 +126,7 @@ const disableUser = asyncHandler(async (req, res) => {
                         email: updatedUser.email,
                     })
                 } else {
-                    res.status(400).json({ message: email + " was not found" })
+                    res.status(400).json({ message: email + ' was not found' })
                 }
             }
         }
