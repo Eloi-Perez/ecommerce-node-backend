@@ -9,7 +9,6 @@ const router = express.Router()
 router.get('/:id', jwtAuth, checkUser, getUser)
 router.post('/signup', registerUser)
 router.post('/login', localAuth, loginUser)
-// router.post('/logout', jwtAuth, logoutUser)
 router.put('/update', localAuth, updateUser)
 router.put('/disable', localAuth, disableUser)
 

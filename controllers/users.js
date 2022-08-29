@@ -5,28 +5,28 @@ const { generateJWT } = require('../utils/helper')
 
 //Get user
 const getUser = asyncHandler(async (req, res) => {
-  const { id } = req.params
-  try {
-    const user = await User.findById(id)
-    res.status(200).json({ 
-        id: user._id,
-        name: user.name,
-        surname: user.surname,
-        email: user.email
-    })
-  } catch (error) {
-    res.status(400).json(error)
-  }
+    const { id } = req.params
+    try {
+        const user = await User.findById(id)
+        res.status(200).json({
+            id: user._id,
+            name: user.name,
+            surname: user.surname,
+            email: user.email
+        })
+    } catch (error) {
+        res.status(400).json(error)
+    }
 })
 
 //Get all users (only Admin)
 const getAllUsers = asyncHandler(async (req, res) => {
-  try {
-    const allUsers = await User.find()
-    res.status(200).json(allUsers)
-  } catch (error) {
-    res.status(400).json(error)
-  }
+    try {
+        const allUsers = await User.find()
+        res.status(200).json(allUsers)
+    } catch (error) {
+        res.status(400).json(error)
+    }
 })
 
 //Register User
@@ -41,7 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
             .then((user) => {
                 if (user) {
                     return res.status(400).json({
-                        message: "Email already taken",
+                        message: 'Email already taken',
                     })
                 } else {
                     newUser.save()
@@ -68,10 +68,6 @@ const loginUser = asyncHandler(async (req, res) => {
     })
 })
 
-//Logout
-// const logoutUser = asyncHandler(async (req, res) => {
-// })
-
 //Update User Details
 const updateUser = asyncHandler(async (req, res) => {
     const { email, password, newName, newSurname, newEmail, newPassword } = req.body
@@ -97,11 +93,11 @@ const updateUser = asyncHandler(async (req, res) => {
             } else {
                 if (updatedUser) {
                     res.status(200).json({
-                        message: "Updated Successfully",
+                        message: 'Updated Successfully',
                         email: updatedUser.email,
                     })
                 } else {
-                    res.status(400).json({ message: email + " was not found" })
+                    res.status(400).json({ message: email + ' was not found' })
                 }
             }
         }
@@ -130,7 +126,7 @@ const disableUser = asyncHandler(async (req, res) => {
                         email: updatedUser.email,
                     })
                 } else {
-                    res.status(400).json({ message: email + " was not found" })
+                    res.status(400).json({ message: email + ' was not found' })
                 }
             }
         }
@@ -139,22 +135,25 @@ const disableUser = asyncHandler(async (req, res) => {
 })
 
 //Delete User
-const deleteUser = async (req, res) => {
+const deleteUser = asyncHandler(async (req, res) => {
     const { email } = req.body
     try {
-        await User.findOneAndRemove({ email: email })
-        res.status(200).json({ message: 'User removed' })
+        const user = await User.findOneAndRemove({ email: email })
+        if (user) {
+            res.status(200).json({ message: 'User removed' })
+        } else {
+            res.status(400).json({ message: 'User not found' })
+        }
     } catch (error) {
         res.status(400).json({ message: error })
     }
-}
+})
 
 module.exports = {
     getUser,
     getAllUsers,
     registerUser,
     loginUser,
-    // logoutUser,
     updateUser,
     disableUser,
     deleteUser
