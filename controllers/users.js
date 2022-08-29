@@ -42,7 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
             .then((user) => {
                 if (user) {
                     return res.status(400).json({
-                        message: "Email already taken",
+                        message: 'Email already taken',
                     })
                 } else {
                     newUser.save()
@@ -117,10 +117,6 @@ const loginUser = asyncHandler(async (req, res) => {
     })
 })
 
-//Logout
-// const logoutUser = asyncHandler(async (req, res) => {
-// })
-
 //Update User Details
 const updateUser = asyncHandler(async (req, res) => {
     const { email, password, newName, newSurname, newEmail, newPassword } = req.body
@@ -146,11 +142,11 @@ const updateUser = asyncHandler(async (req, res) => {
             } else {
                 if (updatedUser) {
                     res.status(200).json({
-                        message: "Updated Successfully",
+                        message: 'Updated Successfully',
                         email: updatedUser.email,
                     })
                 } else {
-                    res.status(400).json({ message: email + " was not found" })
+                    res.status(400).json({ message: email + ' was not found' })
                 }
             }
         }
@@ -179,7 +175,7 @@ const disableUser = asyncHandler(async (req, res) => {
                         email: updatedUser.email,
                     })
                 } else {
-                    res.status(400).json({ message: email + " was not found" })
+                    res.status(400).json({ message: email + ' was not found' })
                 }
             }
         }
@@ -188,15 +184,19 @@ const disableUser = asyncHandler(async (req, res) => {
 })
 
 //Delete User
-const deleteUser = async (req, res) => {
+const deleteUser = asyncHandler(async (req, res) => {
     const { email } = req.body
     try {
-        await User.findOneAndRemove({ email: email })
-        res.status(200).json({ message: 'User removed' })
+        const user = await User.findOneAndRemove({ email: email })
+        if (user) {
+            res.status(200).json({ message: 'User removed' })
+        } else {
+            res.status(400).json({ message: 'User not found' })
+        }
     } catch (error) {
         res.status(400).json({ message: error })
     }
-}
+})
 
 module.exports = {
     getUser,
@@ -204,7 +204,6 @@ module.exports = {
     registerUser,
     verifyEmail,
     loginUser,
-    // logoutUser,
     updateUser,
     disableUser,
     deleteUser
