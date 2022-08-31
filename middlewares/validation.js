@@ -8,21 +8,19 @@ const userValidate = [
   body('surname')
     .trim()
     .exists()
-    .withMessage('Surname is required')
-    .isLength({ min: 4 })
-    .withMessage('Surname should be at least 4 characters'),
+    .withMessage('Surname is required'),
   body('password')
     .trim()
     .exists()
     .withMessage('Password is required')
-    .isLength({ min: 5, max: 10 })
-    .withMessage('Password should be at least 5 characters'),
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,20}$/)
+    .withMessage('The password should be between 6 and 20 characters, include numbers, uppercase, lowercase and on of (@$!%*?&)'),
   body('email')
     .exists()
     .withMessage('Email is required')
     .isEmail()
     .withMessage('Provide valid email')
-    .normalizeEmail()
+    .normalizeEmail({ gmail_remove_dots: false, gmail_convert_googlemaildotcom: false })
     .trim()
 ]
 

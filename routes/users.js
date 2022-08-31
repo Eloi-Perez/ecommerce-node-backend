@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { userValidate } = require('../validations/validation')
+const { userValidate } = require('../middlewares/validation')
 const { localAuth, jwtAuth, jwtAdminAuth, checkUser } = require('../middlewares/auth')
 const { getUser, getAllUsers, registerUser, loginUser, updateUser, disableUser, deleteUser } = require('../controllers/users')
 
