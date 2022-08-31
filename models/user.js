@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema(
     surname: { type: String, required: true, trim: true },
     email: { type: String, required: true, trim: true },
     password: { type: String, required: true, trim: true },
-    verification: { type: String, required: false, default: randomBytes(64).toString('hex') },
+    verification: { type: String, default: randomBytes(64).toString('hex') },
     resetPassword: {
       token: { type: String },
       expireDate: { type: Date }
