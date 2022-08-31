@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
-const crypto = require('crypto')
+const { randomBytes } = require('crypto')
 
 const UserSchema = new mongoose.Schema(
   {
@@ -8,9 +8,14 @@ const UserSchema = new mongoose.Schema(
     surname: { type: String, required: true, trim: true },
     email: { type: String, required: true, trim: true },
     password: { type: String, required: true, trim: true },
-    verification: { type: String, required: false, default: crypto.randomBytes(64).toString('hex') },
+    verification: { type: String, required: false, default: randomBytes(64).toString('hex') },
+    resetPassword: {
+      token: { type: String },
+      created: { type: Date }
+    },
     active: { type: Boolean, default: false },
-    admin: { type: Boolean, default: false }
+    admin: { type: Boolean, default: false },
+    // expireAt: { type: Date, default: new Date(), expires: '7d' } // remove at verification
   },
   {
     timestamps: true
