@@ -20,7 +20,7 @@ const userValidate = [
     .withMessage('Email is required')
     .isEmail()
     .withMessage('Provide valid email')
-    .normalizeEmail()
+    .normalizeEmail({ gmail_remove_dots: false, gmail_convert_googlemaildotcom: false })
     .trim()
 ]
 
