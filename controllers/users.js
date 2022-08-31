@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler')
+const { validationResult } = require('express-validator')
 
 const User = require('../models/user')
 const { generateJWT } = require('../utils/helper')
@@ -28,9 +29,6 @@ const getAllUsers = asyncHandler(async (req, res) => {
     res.status(400).json(error)
   }
 })
-
-const {  validationResult } = require('express-validator')
-
 
 //Register User
 const registerUser = asyncHandler(async (req, res) => {
