@@ -18,11 +18,10 @@ mongoose
     console.log('MongoDB connection is failed')
   })
 
-
 app.use(cors())
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(passport.initialize())
-
 
 app.use('/users', usersRouter)
 app.use('/products', productsRouter)

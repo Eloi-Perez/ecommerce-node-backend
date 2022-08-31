@@ -29,25 +29,43 @@ const getAllUsers = asyncHandler(async (req, res) => {
   }
 })
 
+const {  validationResult } = require('express-validator')
+
+
 //Register User
 const registerUser = asyncHandler(async (req, res) => {
   const { name, surname, email, password } = req.body
+
   //TODO check if valid email
   const hashedPassword = User.hashPassword(password)
   const newUser = new User({ name, surname, email, password: hashedPassword })
 
   try {
-    User.findOne({ email: email })
-      .then((user) => {
-        if (user) {
-          return res.status(400).json({
-            message: 'Email already taken',
-          })
-        } else {
-          newUser.save()
-          res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email })
-        }
+    // if there is error then return Error
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
       })
+    }
+
+    User.findOne({ email: email }).then(user => {
+      if (user) {
+        return res.status(400).json({
+          message: 'Email already taken'
+        })
+      } else {
+        newUser.save()
+        res.status(200).json({
+          name: newUser.name,
+          surname: newUser.surname,
+          email: newUser.email
+        })
+      }
+    })
+
   } catch (error) {
     res.status(400).json(error)
   }
@@ -82,8 +100,8 @@ const updateUser = asyncHandler(async (req, res) => {
         name: newName,
         surname: newSurname,
         email: newEmail,
-        password: hashedPassword,
-      },
+        password: hashedPassword
+      }
     },
     { new: true, omitUndefined: true },
     (err, updatedUser) => {
@@ -94,7 +112,7 @@ const updateUser = asyncHandler(async (req, res) => {
         if (updatedUser) {
           res.status(200).json({
             message: 'Updated Successfully',
-            email: updatedUser.email,
+            email: updatedUser.email
           })
         } else {
           res.status(400).json({ message: email + ' was not found' })
@@ -111,8 +129,8 @@ const disableUser = asyncHandler(async (req, res) => {
     { email: email },
     {
       $set: {
-        active: false,
-      },
+        active: false
+      }
     },
     { new: true, omitUndefined: true },
     (err, updatedUser) => {
@@ -123,7 +141,7 @@ const disableUser = asyncHandler(async (req, res) => {
         if (updatedUser) {
           res.status(200).json({
             message: "Account 'deleted' (disabled)",
-            email: updatedUser.email,
+            email: updatedUser.email
           })
         } else {
           res.status(400).json({ message: email + ' was not found' })
@@ -131,7 +149,6 @@ const disableUser = asyncHandler(async (req, res) => {
       }
     }
   )
-
 })
 
 //Delete User
