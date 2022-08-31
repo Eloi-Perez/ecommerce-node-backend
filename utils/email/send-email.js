@@ -30,7 +30,7 @@ const sendEmail = async (email, safe) => {
     transporter.sendMail(mailData, (err, info) => {
       if (err) {
         console.log(err)
-        reject({ message: 'Error' })
+        reject({ message: 'Error, email not sent' })
       } else {
         console.log(info)
         resolve({ message: 'Sent!' })
