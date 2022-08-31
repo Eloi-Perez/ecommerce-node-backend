@@ -35,19 +35,14 @@ const {  validationResult } = require('express-validator')
 //Register User
 const registerUser = asyncHandler(async (req, res) => {
   const { name, surname, email, password } = req.body
-
-  //TODO check if valid email
+  const validationErrors = validationResult(req)
   const hashedPassword = User.hashPassword(password)
   const newUser = new User({ name, surname, email, password: hashedPassword })
 
   try {
-    // if there is error then return Error
-    const errors = validationResult(req)
-
-    if (!errors.isEmpty()) {
+    if (!validationErrors.isEmpty()) {
       return res.status(400).json({
-        success: false,
-        errors: errors.array()
+        errors: validationErrors.array()
       })
     }
 
