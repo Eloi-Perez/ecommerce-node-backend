@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema(
     },
     active: { type: Boolean, default: false },
     admin: { type: Boolean, default: false },
-    // expireAt: { type: Date, default: new Date(), expires: '7d' } // remove at verification
+    expireAt: { type: Date, default: new Date(Date.now() + (1000 * 60 * 60) * 24 * 7) } // 7 days
   },
   {
     timestamps: true

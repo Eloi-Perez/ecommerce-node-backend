@@ -17,7 +17,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
         },
         $unset: {
           verification: 1,
-          // expireAt: 1
+          expireAt: 1
         },
       },
       { new: true },
@@ -102,7 +102,7 @@ const registerUser = asyncHandler(async (req, res) => {
           // sendEmail(email, false)
           //   .then((msg) => res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }))
           //   .catch((err) => res.status(400).json({ err }))
-          
+          console.log('this is where the email is sent in production')         //-------------------testing
           res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }) //-------------------testing
         }
       })
