@@ -119,67 +119,67 @@ const loginUser = asyncHandler(async (req, res) => {
 
 //Update User Details
 const updateUser = asyncHandler(async (req, res) => {
-    const { email, password, newName, newSurname, newEmail, newPassword } = req.body
-    let hashedPassword
-    if (newPassword) {
-        hashedPassword = User.hashPassword(newPassword)
-    }
-    User.findOneAndUpdate(
-        { email: email },
-        {
-            $set: {
-                name: newName,
-                surname: newSurname,
-                email: newEmail,
-                password: hashedPassword,
-            },
-        },
-        { new: true },
-        (err, updatedUser) => {
-            if (err) {
-                console.error(err)
-                res.status(500).json({ err })
-            } else {
-                if (updatedUser) {
-                    res.status(200).json({
-                        message: 'Updated Successfully',
-                        email: updatedUser.email,
-                    })
-                } else {
-                    res.status(400).json({ message: email + ' was not found' })
-                }
-            }
+  const { email, password, newName, newSurname, newEmail, newPassword } = req.body
+  let hashedPassword
+  if (newPassword) {
+    hashedPassword = User.hashPassword(newPassword)
+  }
+  User.findOneAndUpdate(
+    { email: email },
+    {
+      $set: {
+        name: newName,
+        surname: newSurname,
+        email: newEmail,
+        password: hashedPassword,
+      },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err)
+        res.status(500).json({ err })
+      } else {
+        if (updatedUser) {
+          res.status(200).json({
+            message: 'Updated Successfully',
+            email: updatedUser.email,
+          })
+        } else {
+          res.status(400).json({ message: email + ' was not found' })
         }
-    )
+      }
+    }
+  )
 })
 
 //Disable User
 const disableUser = asyncHandler(async (req, res) => {
-    const { email, password } = req.body
-    User.findOneAndUpdate(
-        { email: email },
-        {
-            $set: {
-                active: false,
-            },
-        },
-        { new: true },
-        (err, updatedUser) => {
-            if (err) {
-                console.error(err)
-                res.status(500).json({ err })
-            } else {
-                if (updatedUser) {
-                    res.status(200).json({
-                        message: "Account 'deleted' (disabled)",
-                        email: updatedUser.email,
-                    })
-                } else {
-                    res.status(400).json({ message: email + ' was not found' })
-                }
-            }
+  const { email, password } = req.body
+  User.findOneAndUpdate(
+    { email: email },
+    {
+      $set: {
+        active: false,
+      },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err)
+        res.status(500).json({ err })
+      } else {
+        if (updatedUser) {
+          res.status(200).json({
+            message: "Account 'deleted' (disabled)",
+            email: updatedUser.email,
+          })
+        } else {
+          res.status(400).json({ message: email + ' was not found' })
         }
-    )
+      }
+    }
+  )
 
 })
 
