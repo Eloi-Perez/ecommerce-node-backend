@@ -46,7 +46,7 @@ passport.use(new JWTStrategy({
 		.then((user) => {
 			if (!user.active) {
 				console.log('disabled user')
-				return callback(null, false, { message: 'your user has been disabled' })
+				return callback(null, false, { message: 'invalid token' }) //error message not in use
 			}
 			return callback(null, user)
 		})
