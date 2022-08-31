@@ -24,6 +24,9 @@ const getUser = asyncHandler(async (req, res) => {
 const getAllUsers = asyncHandler(async (req, res) => {
   try {
     const allUsers = await User.find()
+    allUsers.forEach(user => {
+      user.password = ''
+    })
     res.status(200).json(allUsers)
   } catch (error) {
     res.status(400).json(error)
