@@ -49,7 +49,6 @@ const updateProduct = asyncHandler(async (req, res) => {
         price: price,
         image: image,
         description: description,
-        
       },
     },
     { new: true },
