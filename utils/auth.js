@@ -21,15 +21,15 @@ passport.use(
           return callback(error)
         }
 
-        // if (!user) {
-        //   console.log('incorrect user')
-        //   return callback(null, false, { message: 'incorrect user' })
-        // }
+        if (!user) {
+          console.log('incorrect user')
+          return callback(null, false, { message: 'incorrect user' })
+        }
 
-        // if (!user.validatePassword(password)) {
-        //   console.log('incorrect password')
-        //   return callback(null, false, { message: 'incorrect password' })
-        // }
+        if (!user.validatePassword(password)) {
+          console.log('incorrect password')
+          return callback(null, false, { message: 'incorrect password' })
+        }
 
         if (!user.active) {
           console.log('disabled user')
