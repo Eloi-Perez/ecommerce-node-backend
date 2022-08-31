@@ -13,8 +13,8 @@ const userValidate = [
     .trim()
     .exists()
     .withMessage('Password is required')
-    .isLength({ min: 5, max: 10 })
-    .withMessage('Password should be at least 5 characters'),
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,20}$/)
+    .withMessage('The password should be between 6 and 20 characters, include numbers, uppercase, lowercase and on of (@$!%*?&)'),
   body('email')
     .exists()
     .withMessage('Email is required')
