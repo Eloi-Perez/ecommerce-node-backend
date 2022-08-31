@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema(
     verification: { type: String, required: false, default: randomBytes(64).toString('hex') },
     resetPassword: {
       token: { type: String },
-      created: { type: Date }
+      expireDate: { type: Date }
     },
     active: { type: Boolean, default: false },
     admin: { type: Boolean, default: false },

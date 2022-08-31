@@ -141,7 +141,7 @@ const resetPassword = asyncHandler(async (req, res) => {
           $set: {
             resetPassword: {
               token: newToken,
-              created: new Date(Date.now() + (60 * 60 * 1000)) // now + 1h
+              expireDate: new Date(Date.now() + (60 * 60 * 1000)) // now + 1h
             }
           },
         },
@@ -176,7 +176,7 @@ const resetPassword = asyncHandler(async (req, res) => {
       const user = await User.findOne({ "resetPassword.token": resetToken })
       if (!user) {
         res.status(400).json({ message: 'invalid token' })
-      } else if (user.resetPassword.created.getTime() < Date.now()) { // has elapsed more than 1h
+      } else if (user.resetPassword.expireDate.getTime() < Date.now()) { // has elapsed more than 1h
         user.resetPassword = undefined
         await user.save()
         res.status(400).json({ message: 'invalid token, delete all!' })
