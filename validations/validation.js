@@ -8,9 +8,7 @@ const userValidate = [
   body('surname')
     .trim()
     .exists()
-    .withMessage('Surname is required')
-    .isLength({ min: 4 })
-    .withMessage('Surname should be at least 4 characters'),
+    .withMessage('Surname is required'),
   body('password')
     .trim()
     .exists()
