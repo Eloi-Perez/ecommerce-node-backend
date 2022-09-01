@@ -12,8 +12,8 @@ const app = express()
 
 mongoose
   .connect(process.env.MONGODB_URI, {})
-  .then(() => { console.log('MongoDB connection is successful') })
-  .catch(() => { console.log('MongoDB connection is failed') })
+  .then(() => { console.log('Connected to MongoDB') })
+  .catch(() => { console.log('Failed to connect to MongoDB') })
 
 app.use(cors()) // TODO options for production
 app.use(express.json())
@@ -29,5 +29,5 @@ app.use((req, res, next) => {
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`)
 })
