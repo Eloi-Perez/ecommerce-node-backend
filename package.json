@@ -1,7 +1,7 @@
 {
   "name": "ecommerce-node-backend",
   "version": "0.0.1",
-  "description": "",
+  "description": "This is a simple ecommerce backend API to use with your frontend store.",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
