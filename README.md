@@ -35,8 +35,8 @@ This is a simple ecommerce backend API to use with your frontend store.
 - ``''`` instead of ``""`` on JS code
 - 2 spaces indenting
 - variable names in camelCase: 	``newVariable``
-- new files names:		``new-file``
-- new folder names:		``new-folder``
+- new files names in kebab-case:		``new-file``
+- new folder names in kebab-case:		``new-folder``
 
 ## Git committing guide:
 
@@ -67,7 +67,7 @@ This is a simple ecommerce backend API to use with your frontend store.
 
     git push
 
-### Now, go back to this repository on GitHub and create a Pull Request
+### **Now, go back to this repository on GitHub and create a Pull Request**
 
 *You will see a new button on top that says "Compare & pull request"*
 
