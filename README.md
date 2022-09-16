@@ -12,11 +12,19 @@ This is a simple ecommerce backend API to use with your frontend store.
 - MongoDB installed and running locally or in Atlas
 
 ## Starting:
-    git clone https://github.com/Eloi-Perez/ecommerce-node-backend.git
+**Fork the repository**
+
+*On this repository on GitHub on the top right, press the button "Fork" then, "Create Fork"*
+
+*On your computer, clone the fork:*
+
+    git clone https://github.com/your-user-name/ecommerce-node-backend.git
     cd ecommerce-node-backend
     git checkout -b userName@feature
 
-**Now create .env file, copy the keys from .env.example and add your config** (email config is not needed as the email sending is commented atm for testing new features easily)
+**Now create .env file, copy the keys from .env.example and add your config**
+
+*(email config is not needed as the email sending is commented atm for testing new features easily)*
 
     npm install
     npm run dev
@@ -35,6 +43,8 @@ This is a simple ecommerce backend API to use with your frontend store.
     git add --all
     git commit -m "feat: amazing feature description"
 
+*(use present tense)*
+
 - feat: The new feature you're adding to a particular application
 - fix: A bug fix
 - style: Feature and updates related to styling
@@ -47,7 +57,7 @@ This is a simple ecommerce backend API to use with your frontend store.
 
 ### Do multiple commits with small features
 
-Once you have something functional push your code
+*Once you have something functional push your code*
 
 ### First push
 
@@ -57,10 +67,10 @@ Once you have something functional push your code
 
     git push
 
-**Once your feature or fix is finished, resolve conflicts before Pull Request**
+### Now, go back to this repository on GitHub and create a Pull Request
 
-    git merge origin/main
-    git push
+*You will see a new button on top that says "Compare & pull request"*
 
-### Now Go to GitHub and create a Pull Request
+*(you could instead click "pull request" on the menu and select manually a branch from your fork)*
+
 **I will review the Pull Request and merge it**
