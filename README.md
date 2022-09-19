@@ -2,32 +2,16 @@
 
 This is a simple ecommerce backend API to use with your frontend store.
 
-# Collaboration & starting guide
+# Starting guide
 
 **New developers welcome**
+
+[Please follow this guide to learn how to get the repository into your computer and how to send your code](https://github.com/Eloi-Perez/guide-collaborating)
 
 ## Prerequisite:
 - node: ">=16.0.0"
 - npm: ">=7.0.0"
 - MongoDB installed and running locally or in Atlas
-
-## Starting:
-**Fork the repository**
-
-*On this repository on GitHub on the top right, press the button "Fork" then, "Create Fork"*
-
-*On your computer, clone the fork:*
-
-    git clone https://github.com/your-user-name/ecommerce-node-backend.git
-    cd ecommerce-node-backend
-    git checkout -b userName@feature
-
-**Now create .env file, copy the keys from .env.example and add your config**
-
-*(email config is not needed as the email sending is commented atm for testing new features easily)*
-
-    npm install
-    npm run dev
 
 ## Style guide:
 
@@ -53,24 +37,12 @@ This is a simple ecommerce backend API to use with your frontend store.
 - docs: Everything related to documentation
 - chore: Regular code maintenance, update packages
 
-## Contributing:
+*Do multiple commits with small features*
 
-### Do multiple commits with small features
+## Development:
 
-*Once you have something functional push your code*
+Use `npm run dev` to start the development server
 
-### First push
+**But don't forget to create .env file, copy the keys from .env.example and add your config**
 
-    git push --set-upstream origin your-branch-name
-
-### After the first one
-
-    git push
-
-### **Now, go back to this repository on GitHub and create a Pull Request**
-
-*You will see a new button on top that says "Compare & pull request"*
-
-*(you could instead click "pull request" on the menu and select manually a branch from your fork)*
-
-**I will review the Pull Request and merge it**
+*(email config is not needed as the email sending is commented atm for testing new features easily)*
