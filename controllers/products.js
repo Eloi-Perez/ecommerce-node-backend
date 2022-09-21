@@ -38,6 +38,15 @@ const createProduct = asyncHandler(async (req, res) => {
   }
 })
 
+// add img
+const addImage = asyncHandler(async (req, res) => {
+  if (!req.files) {
+    return res.status(400).json({ message: 'error; file not stored' })
+  } else {
+    return res.status(200).json({ message: 'success; file received' })
+  }
+})
+
 //UPDATE ONE PRODUCT
 const updateProduct = asyncHandler(async (req, res) => {
   const { name, image, description, price } = req.body
@@ -86,6 +95,7 @@ module.exports = {
   getProduct,
   getAllProducts,
   createProduct,
+  addImage,
   updateProduct,
   deleteProduct
 }
