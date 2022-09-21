@@ -4,6 +4,7 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const passport = require('passport')
+const path = require('path')
 
 const usersRouter = require('./routes/users')
 const productsRouter = require('./routes/products')
@@ -19,6 +20,8 @@ app.use(cors()) // TODO options for production
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(passport.initialize())
+
+app.use('/img', express.static(path.join(__dirname, 'public/img')))
 
 app.use('/users', usersRouter)
 app.use('/products', productsRouter)
