@@ -1,6 +1,5 @@
 const asyncHandler = require('express-async-handler')
 const { randomBytes } = require('crypto')
-const { validationResult } = require('express-validator')
 
 const User = require('../models/user')
 const { generateJWT } = require('../utils/helper')
@@ -72,6 +71,9 @@ const getAllUsers = asyncHandler(async (req, res) => {
   }
 })
 
+const {  validationResult } = require('express-validator')
+
+
 //Register User
 const registerUser = asyncHandler(async (req, res) => {
   const { name, surname, email, password } = req.body
@@ -112,7 +114,24 @@ const registerUser = asyncHandler(async (req, res) => {
           res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }) //-------------------testing
         }
       })
-    } catch (error) {
+    }
+
+    User.findOne({ email: email }).then(user => {
+      if (user) {
+        return res.status(400).json({
+          message: 'Email already taken'
+        })
+      } else {
+        newUser.save()
+        res.status(200).json({
+          name: newUser.name,
+          surname: newUser.surname,
+          email: newUser.email
+        })
+      }
+    })
+
+  } catch (error) {
     res.status(400).json(error)
   }
 })
@@ -159,7 +178,7 @@ const resetPassword = asyncHandler(async (req, res) => {
             //   return `http://front-end-page-with-form-to-send-new-password?key=${newToken}`
             // }
             // const content = () => {
-            //   return /*html*/`We are sorry you lost your password. <a href=${link()}>Please click here to reset your password</a><br>This link will expire in 1h`
+            //   return /*html*/`We are sorry you lost your password. <a href=${link()}>Please click here to reset your password</a>`
             // }
             // const email = {
             //   to: updatedUser.email,
