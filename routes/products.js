@@ -1,5 +1,6 @@
 const express = require('express')
 
+const { productValidate } = require('../middlewares/validation')
 const { jwtAdminAuth } = require('../middlewares/auth')
 const {
   getProduct,
@@ -20,7 +21,7 @@ router.get('/:id', getProduct)
 //Admin routes
 router.post('/add', jwtAdminAuth, createProduct)
 router.post('/img', jwtAdminAuth, upload, addImage)
-router.put('/:id', jwtAdminAuth, updateProduct)
+router.put('/:id', jwtAdminAuth, productValidate, updateProduct)
 router.delete('/:id', jwtAdminAuth, deleteProduct)
 
 module.exports = router

@@ -28,8 +28,8 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
 //CREATE ONE PRODUCT
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, price, image, description, id } = req.body
-  const newProduct = new Product({ name, price, image, description, id })
+  const { name, price, images, description, id } = req.body
+  const newProduct = new Product({ name, price, images, description, id })
   try {
     await newProduct.save()
     res.status(200).json(newProduct)
@@ -49,14 +49,14 @@ const addImage = asyncHandler(async (req, res) => {
 
 //UPDATE ONE PRODUCT
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, image, description, price } = req.body
+  const { name, images, description, price } = req.body
   Product.findOneAndUpdate(
     { _id: req.params.id },
     {
       $set: {
         name: name,
         price: price,
-        image: image,
+        images: images, // atm you need to reupload all the images
         description: description,
       },
     },
