@@ -11,7 +11,7 @@ passport.use(new LocalStrategy({
 	usernameField: 'email',
 	passwordField: 'password'
 }, (email, password, callback) => {
-	console.log('Logging in: ' + email)
+	// console.log('Logging in: ' + email)
 	User.findOne({ email: email }, (error, user) => {
 		if (error) {
 			console.log(error)
@@ -33,7 +33,7 @@ passport.use(new LocalStrategy({
 			return callback(null, false, { message: 'incorrect user' })
 		}
 
-		console.log('finished login')
+		// console.log('finished login')
 		return callback(null, user)
 	})
 }))
