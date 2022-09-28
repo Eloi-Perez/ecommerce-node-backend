@@ -59,14 +59,14 @@ const addImage = asyncHandler(async (req, res) => {
 
 //Update product
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, images, description, price } = req.body
+  const { name, price, description, imagesMeta } = req.body
   Product.findOneAndUpdate(
     { _id: req.params.id },
     {
       $set: {
         name: name,
         price: price,
-        images: images, // atm you need to reupload all the images
+        // images: images, // atm you need to reupload all the images
         description: description,
       },
     },
@@ -77,10 +77,24 @@ const updateProduct = asyncHandler(async (req, res) => {
         res.status(500).json({ err })
       } else {
         if (updatedProduct) {
-          // updatedProduct.images.forEach(e => {
-          //   const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
-          //   unlink(filePath, (err) => err && console.log(err))
-          // })
+          if (imagesMeta) {
+            //delete old
+            updatedProduct.images.forEach(e => {
+              const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
+              unlink(filePath, (err) => err && console.log(err))
+            })
+            //update "images" with new routes
+            for (let i = 0; i < imagesMeta.length; i++) {
+              let newObject = {
+                filename: updatedProduct._id + '_' + i + '.' + imagesMeta[i].ext,
+                priority: imagesMeta[i].priority
+              }
+              updatedProduct.images = []
+              updatedProduct.images.push(newObject)
+            }
+            updatedProduct.save()
+          }
+
           res.status(200).json(updatedProduct)
         } else {
           res.status(400).json({ message: req.params.id + ' was not found' })
