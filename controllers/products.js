@@ -28,8 +28,15 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
 //CREATE ONE PRODUCT
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, price, images, description, id } = req.body
-  const newProduct = new Product({ name, price, images, description, id })
+  const { name, price, description, imagesMeta } = req.body // imagesMeta = [{priority: 0, ext: 'jpg'}]
+  const newProduct = new Product({ name, price, description })
+  for (let i = 0; i < imagesMeta.length; i++) {
+    let newObject = {
+      filename: newProduct._id + '_' + i + '.' + imagesMeta[i].ext,
+      priority: imagesMeta[i].priority
+    }
+    newProduct.images.push(newObject)
+  }
   try {
     await newProduct.save()
     res.status(200).json(newProduct)
@@ -38,12 +45,12 @@ const createProduct = asyncHandler(async (req, res) => {
   }
 })
 
-// add img
+// add img  (on frontend this is called after Create One Product)
 const addImage = asyncHandler(async (req, res) => {
   if (!req.files) {
-    return res.status(400).json({ message: 'error; file not stored' })
+    return res.status(400).json({ message: 'error; files not stored' })
   } else {
-    return res.status(200).json({ message: 'success; file received' })
+    return res.status(200).json({ message: 'success; files received' })
   }
 })
 
@@ -82,6 +89,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
   try {
     const product = await Product.findByIdAndRemove(id)
     if (product) {
+      console.log(product) //TODO delete images stored
       res.status(300).json({ message: 'Product removed' })
     } else {
       res.status(400).json({ message: 'Product not found' })
