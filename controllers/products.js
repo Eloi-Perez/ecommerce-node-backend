@@ -1,7 +1,10 @@
-const Product = require('../models/product')
+const path = require('path');
+const { unlink } = require('fs')
 const asyncHandler = require('express-async-handler')
 
-//GET ONE PRODUCT
+const Product = require('../models/product')
+
+//Get product
 const getProduct = asyncHandler(async (req, res) => {
   const { id } = req.params
   try {
@@ -16,7 +19,7 @@ const getProduct = asyncHandler(async (req, res) => {
   }
 })
 
-//GET ALL PRODUCTS
+//Get all products
 const getAllProducts = asyncHandler(async (req, res) => {
   try {
     const allProducts = await Product.find()
@@ -26,7 +29,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
   }
 })
 
-//CREATE ONE PRODUCT
+//Create product
 const createProduct = asyncHandler(async (req, res) => {
   const { name, price, description, imagesMeta } = req.body // imagesMeta = [{priority: 0, ext: 'jpg'}]
   const newProduct = new Product({ name, price, description })
@@ -45,7 +48,7 @@ const createProduct = asyncHandler(async (req, res) => {
   }
 })
 
-// add img  (on frontend this is called after Create One Product)
+//Add img  (on frontend this is called after Create One Product)
 const addImage = asyncHandler(async (req, res) => {
   if (!req.files) {
     return res.status(400).json({ message: 'error; files not stored' })
@@ -54,7 +57,7 @@ const addImage = asyncHandler(async (req, res) => {
   }
 })
 
-//UPDATE ONE PRODUCT
+//Update product
 const updateProduct = asyncHandler(async (req, res) => {
   const { name, images, description, price } = req.body
   Product.findOneAndUpdate(
@@ -74,6 +77,10 @@ const updateProduct = asyncHandler(async (req, res) => {
         res.status(500).json({ err })
       } else {
         if (updatedProduct) {
+          // updatedProduct.images.forEach(e => {
+          //   const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
+          //   unlink(filePath, (err) => err && console.log(err))
+          // })
           res.status(200).json(updatedProduct)
         } else {
           res.status(400).json({ message: req.params.id + ' was not found' })
@@ -83,13 +90,16 @@ const updateProduct = asyncHandler(async (req, res) => {
   )
 })
 
-//DELETE ONE PRODUCT
+//Delete product
 const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params
   try {
     const product = await Product.findByIdAndRemove(id)
     if (product) {
-      console.log(product) //TODO delete images stored
+      product.images.forEach(e => {
+        const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
+        unlink(filePath, (err) => err && console.log(err))
+      })
       res.status(300).json({ message: 'Product removed' })
     } else {
       res.status(400).json({ message: 'Product not found' })
