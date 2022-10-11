@@ -114,7 +114,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
         const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
         unlink(filePath, (err) => err && console.log(err))
       })
-      res.status(300).json({ message: 'Product removed' })
+      res.status(200).json({ message: 'Product removed' })
     } else {
       res.status(400).json({ message: 'Product not found' })
     }
