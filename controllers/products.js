@@ -1,7 +1,10 @@
-const Product = require('../models/product')
+const path = require('path');
+const { unlink } = require('fs')
 const asyncHandler = require('express-async-handler')
 
-//GET ONE PRODUCT
+const Product = require('../models/product')
+
+//Get product
 const getProduct = asyncHandler(async (req, res) => {
   const { id } = req.params
   try {
@@ -16,7 +19,7 @@ const getProduct = asyncHandler(async (req, res) => {
   }
 })
 
-//GET ALL PRODUCTS
+//Get all products
 const getAllProducts = asyncHandler(async (req, res) => {
   try {
     const allProducts = await Product.find()
@@ -26,10 +29,17 @@ const getAllProducts = asyncHandler(async (req, res) => {
   }
 })
 
-//CREATE ONE PRODUCT
+//Create product
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, price, image, description, id } = req.body
-  const newProduct = new Product({ name, price, image, description, id })
+  const { name, price, description, imagesMeta } = req.body // imagesMeta = [{priority: 0, ext: 'jpg'}]
+  const newProduct = new Product({ name, price, description })
+  for (let i = 0; i < imagesMeta.length; i++) {
+    let newObject = {
+      filename: newProduct._id + '_' + i + '.' + imagesMeta[i].ext,
+      priority: imagesMeta[i].priority
+    }
+    newProduct.images.push(newObject)
+  }
   try {
     await newProduct.save()
     res.status(200).json(newProduct)
@@ -38,16 +48,25 @@ const createProduct = asyncHandler(async (req, res) => {
   }
 })
 
-//UPDATE ONE PRODUCT
+//Add img  (on frontend this is called after Create One Product)
+const addImage = asyncHandler(async (req, res) => {
+  if (!req.files) {
+    return res.status(400).json({ message: 'error; files not stored' })
+  } else {
+    return res.status(200).json({ message: 'success; files received' })
+  }
+})
+
+//Update product
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, image, description, price } = req.body
+  const { name, price, description, imagesMeta } = req.body
   Product.findOneAndUpdate(
     { _id: req.params.id },
     {
       $set: {
         name: name,
         price: price,
-        image: image,
+        // images: images, // atm you need to reupload all the images
         description: description,
       },
     },
@@ -58,6 +77,24 @@ const updateProduct = asyncHandler(async (req, res) => {
         res.status(500).json({ err })
       } else {
         if (updatedProduct) {
+          if (imagesMeta) {
+            //delete old
+            updatedProduct.images.forEach(e => {
+              const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
+              unlink(filePath, (err) => err && console.log(err))
+            })
+            //update "images" with new routes
+            for (let i = 0; i < imagesMeta.length; i++) {
+              let newObject = {
+                filename: updatedProduct._id + '_' + i + '.' + imagesMeta[i].ext,
+                priority: imagesMeta[i].priority
+              }
+              updatedProduct.images = []
+              updatedProduct.images.push(newObject)
+            }
+            updatedProduct.save()
+          }
+
           res.status(200).json(updatedProduct)
         } else {
           res.status(400).json({ message: req.params.id + ' was not found' })
@@ -67,13 +104,17 @@ const updateProduct = asyncHandler(async (req, res) => {
   )
 })
 
-//DELETE ONE PRODUCT
+//Delete product
 const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params
   try {
     const product = await Product.findByIdAndRemove(id)
     if (product) {
-      res.status(300).json({ message: 'Product removed' })
+      product.images.forEach(e => {
+        const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
+        unlink(filePath, (err) => err && console.log(err))
+      })
+      res.status(200).json({ message: 'Product removed' })
     } else {
       res.status(400).json({ message: 'Product not found' })
     }
@@ -86,6 +127,7 @@ module.exports = {
   getProduct,
   getAllProducts,
   createProduct,
+  addImage,
   updateProduct,
   deleteProduct
 }

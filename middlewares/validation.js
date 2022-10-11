@@ -24,4 +24,29 @@ const userValidate = [
     .trim()
 ]
 
-module.exports = { userValidate }
+const productValidate = (req, res, next) => {
+  const array = req.body.images
+  // Validate priority
+  if (array) {
+    const isIntegerPositive = () => {
+      return !array.map(el => Number.isInteger(el.priority) && el.priority >= 0).includes(false)
+    }
+    if (isIntegerPositive()) {
+      let seen = new Set()
+      const hasDuplicates = array.some((currentObject) => {
+        return seen.size === seen.add(currentObject.priority).size
+      })
+      if (hasDuplicates) {
+        return res.status(400).json({ message: 'error; Priority can\'t have duplicated values' })
+      } else {
+        return next()
+      }
+    } else {
+      return res.status(400).json({ message: 'error; Priority needs to be an integer positive number' })
+    }
+  } else {
+    return next()
+  }
+}
+
+module.exports = { userValidate, productValidate }
