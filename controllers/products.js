@@ -84,12 +84,12 @@ const updateProduct = asyncHandler(async (req, res) => {
               unlink(filePath, (err) => err && console.log(err))
             })
             //update "images" with new routes
+            updatedProduct.images = []
             for (let i = 0; i < imagesMeta.length; i++) {
               let newObject = {
                 filename: updatedProduct._id + '_' + i + '.' + imagesMeta[i].ext,
                 priority: imagesMeta[i].priority
               }
-              updatedProduct.images = []
               updatedProduct.images.push(newObject)
             }
             updatedProduct.save()
