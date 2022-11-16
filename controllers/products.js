@@ -31,8 +31,8 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
 //Create product
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, imagesMeta } = req.body // imagesMeta = [{priority: 0, ext: 'jpg'}]
-  const newProduct = new Product({ name, price, description })
+  const { name, sizes, description, imagesMeta } = req.body // imagesMeta = [{priority: 0, ext: 'jpg'}]
+  const newProduct = new Product({ name, sizes, description })
   for (let i = 0; i < imagesMeta.length; i++) {
     let newObject = {
       filename: newProduct._id + '_' + i + '.' + imagesMeta[i].ext,
@@ -59,13 +59,13 @@ const addImage = asyncHandler(async (req, res) => {
 
 //Update product
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, imagesMeta } = req.body
+  const { name, sizes, description, imagesMeta } = req.body
   Product.findOneAndUpdate(
     { _id: req.params.id },
     {
       $set: {
         name: name,
-        price: price,
+        sizes: sizes,
         // images: images, // atm you need to reupload all the images
         description: description,
       },
