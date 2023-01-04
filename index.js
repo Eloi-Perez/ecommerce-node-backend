@@ -11,6 +11,7 @@ const productsRouter = require('./routes/products')
 
 const app = express()
 
+mongoose.set('strictQuery', false)
 mongoose
   .connect(process.env.MONGODB_URI, {})
   .then(() => { console.log('Connected to MongoDB') })
