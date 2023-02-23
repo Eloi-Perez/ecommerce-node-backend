@@ -6,8 +6,7 @@ const mongoose = require('mongoose')
 const passport = require('passport')
 const path = require('path')
 
-const usersRouter = require('./routes/users')
-const productsRouter = require('./routes/products')
+const routes = require('./routes')
 
 const app = express()
 
@@ -24,8 +23,7 @@ app.use(passport.initialize())
 
 app.use('/img', express.static(path.join(__dirname, 'public/img')))
 
-app.use('/users', usersRouter)
-app.use('/products', productsRouter)
+app.use('/', routes)
 
 app.use((req, res, next) => {
   res.status(404).json({ message: '404, endpoint not found' })
