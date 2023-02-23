@@ -23,7 +23,7 @@ app.use(passport.initialize())
 
 app.use('/img', express.static(path.join(__dirname, 'public/img')))
 
-app.use('/', routes)
+app.use('/v0', routes)
 
 app.use((req, res, next) => {
   res.status(404).json({ message: '404, endpoint not found' })
