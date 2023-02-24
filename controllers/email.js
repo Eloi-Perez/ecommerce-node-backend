@@ -4,6 +4,7 @@ const contactEmail = require('../utils/email/contact-email')
 
 const contactForm = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, message } = req.body
+  // TODO validation and take in account that lastName is not required
   try {
     // Send Email
     const content = () => {
