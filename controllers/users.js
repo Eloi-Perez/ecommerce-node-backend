@@ -52,7 +52,9 @@ const getUser = asyncHandler(async (req, res) => {
       id: user._id,
       name: user.name,
       surname: user.surname,
-      email: user.email
+      email: user.email,
+      active: user.active,
+      admin: user.admin,
     })
   } catch (error) {
     res.status(400).json(error)
