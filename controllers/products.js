@@ -59,14 +59,15 @@ const addImage = asyncHandler(async (req, res) => {
 
 //Update product
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, sizes, description, imagesMeta } = req.body
+  const { name, sizes, images, description, imagesMeta } = req.body
   Product.findOneAndUpdate(
     { _id: req.params.id },
     {
       $set: {
         name: name,
         sizes: sizes,
-        // images: images, // atm you need to reupload all the images
+        // for updating priority, if new image you need to reupload them all with imagesMeta
+        images: images,
         description: description,
       },
     },
