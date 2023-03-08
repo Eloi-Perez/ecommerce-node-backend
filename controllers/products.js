@@ -9,6 +9,7 @@ const getProduct = asyncHandler(async (req, res) => {
   const { id } = req.params
   try {
     const oneProduct = await Product.findById(id)
+      .populate('ingredients')
     if (oneProduct) {
       res.status(200).json(oneProduct)
     } else {
@@ -59,7 +60,7 @@ const addImage = asyncHandler(async (req, res) => {
 
 //Update product
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, sizes, images, description, imagesMeta } = req.body
+  const { name, sizes, images, description, imagesMeta, ingredients } = req.body
   Product.findOneAndUpdate(
     { _id: req.params.id },
     {
@@ -69,6 +70,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         // for updating priority, if new image you need to reupload them all with imagesMeta
         images: images,
         description: description,
+        ingredients: ingredients,
       },
     },
     { new: true },

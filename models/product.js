@@ -13,7 +13,11 @@ const ProductSchema = new mongoose.Schema(
       filename: { type: String },
       priority: { type: Number }
     }],
-    description: { type: String, required: true }
+    description: { type: String, required: true },
+    ingredients: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Ingredient',
+    },]
   },
   {
     timestamps: true
