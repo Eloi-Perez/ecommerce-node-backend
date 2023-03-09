@@ -14,11 +14,11 @@ const verifyEmail = asyncHandler(async (req, res) => {
       { verification: key },
       {
         $set: {
-          active: true
+          active: true,
         },
         $unset: {
           verification: 1,
-          expireAt: 1
+          expireAt: 1,
         },
       },
       { new: true },
@@ -65,7 +65,7 @@ const getUser = asyncHandler(async (req, res) => {
 const getAllUsers = asyncHandler(async (req, res) => {
   try {
     const allUsers = await User.find()
-    allUsers.forEach(user => {
+    allUsers.forEach((user) => {
       user.password = ''
     })
     res.status(200).json(allUsers)
@@ -84,36 +84,35 @@ const registerUser = asyncHandler(async (req, res) => {
   try {
     if (!validationErrors.isEmpty()) {
       return res.status(400).json({
-        errors: validationErrors.array()
+        errors: validationErrors.array(),
       })
     }
-    User.findOne({ email: email })
-      .then((user) => {
-        if (user) {
-          return res.status(400).json({
-            message: 'Email already taken',
-          })
-        } else {
-          newUser.save()
-          // Send Verification Email
-          // const link = () => {
-          //   return `${process.env.BASE_URL}/users/verify?key=${newUser.verification}`
-          // }
-          // const content = () => {
-          //   return /*html*/`Thank you for registering. <a href=${link()}>Please click here to verify your email</a>`
-          // }
-          // const email = {
-          //   to: newUser.email,
-          //   subject: 'Account verification',
-          //   message: content()
-          // }
-          // sendEmail(email, false)
-          //   .then((msg) => res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }))
-          //   .catch((err) => res.status(400).json({ err }))
-          console.log('this is where the email is sent in production')         //-------------------testing
-          res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }) //-------------------testing
-        }
-      })
+    User.findOne({ email: email }).then((user) => {
+      if (user) {
+        return res.status(400).json({
+          message: 'Email already taken',
+        })
+      } else {
+        newUser.save()
+        // Send Verification Email
+        // const link = () => {
+        //   return `${process.env.BASE_URL}/users/verify?key=${newUser.verification}`
+        // }
+        // const content = () => {
+        //   return /*html*/`Thank you for registering. <a href=${link()}>Please click here to verify your email</a>`
+        // }
+        // const email = {
+        //   to: newUser.email,
+        //   subject: 'Account verification',
+        //   message: content()
+        // }
+        // sendEmail(email, false)
+        //   .then((msg) => res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }))
+        //   .catch((err) => res.status(400).json({ err }))
+        console.log('this is where the email is sent in production') //-------------------testing
+        res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }) //-------------------testing
+      }
+    })
   } catch (error) {
     res.status(400).json(error)
   }
@@ -149,8 +148,8 @@ const resetPassword = asyncHandler(async (req, res) => {
           $set: {
             resetPassword: {
               token: newToken,
-              expireDate: new Date(Date.now() + (60 * 60 * 1000)) // now + 1h
-            }
+              expireDate: new Date(Date.now() + 60 * 60 * 1000), // now + 1h
+            },
           },
         },
         { new: true },
@@ -177,14 +176,16 @@ const resetPassword = asyncHandler(async (req, res) => {
             // User not found -> 200 for security reasons
             res.status(200).json({ message: 'Email sent' })
           }
-        })
+        }
+      )
     } else if (resetToken && newPassword) {
       console.log('second') //-------------------testing
       // Second request
-      const user = await User.findOne({ "resetPassword.token": resetToken })
+      const user = await User.findOne({ 'resetPassword.token': resetToken })
       if (!user) {
         res.status(400).json({ message: 'invalid token' })
-      } else if (user.resetPassword.expireDate.getTime() < Date.now()) { // has elapsed more than 1h
+      } else if (user.resetPassword.expireDate.getTime() < Date.now()) {
+        // has elapsed more than 1h
         user.resetPassword = undefined
         await user.save()
         res.status(400).json({ message: 'invalid token, delete all!' })
@@ -228,8 +229,8 @@ const updateUser = asyncHandler(async (req, res) => {
         name: newName,
         surname: newSurname,
         email: newEmail,
-        password: hashedPassword
-      }
+        password: hashedPassword,
+      },
     },
     { new: true },
     (err, updatedUser) => {
@@ -240,7 +241,7 @@ const updateUser = asyncHandler(async (req, res) => {
         if (updatedUser) {
           res.status(200).json({
             message: 'Updated Successfully',
-            email: updatedUser.email
+            email: updatedUser.email,
           })
         } else {
           res.status(400).json({ message: email + ' was not found' })
@@ -257,8 +258,8 @@ const disableUser = asyncHandler(async (req, res) => {
     { email: email },
     {
       $set: {
-        active: false
-      }
+        active: false,
+      },
     },
     { new: true },
     (err, updatedUser) => {
@@ -269,7 +270,7 @@ const disableUser = asyncHandler(async (req, res) => {
         if (updatedUser) {
           res.status(200).json({
             message: "Account 'deleted' (disabled)",
-            email: updatedUser.email
+            email: updatedUser.email,
           })
         } else {
           res.status(400).json({ message: email + ' was not found' })
@@ -303,5 +304,5 @@ module.exports = {
   resetPassword,
   updateUser,
   disableUser,
-  deleteUser
+  deleteUser,
 }

@@ -8,7 +8,7 @@ const contactForm = asyncHandler(async (req, res) => {
   try {
     // Send Email
     const content = () => {
-      return /*html*/`${firstName} ${lastName}<br>${email}<br>${message}`
+      return /*html*/ `${firstName} ${lastName}<br>${email}<br>${message}`
     }
     const emailWrap = {
       subject: 'Contact Form',
@@ -26,5 +26,5 @@ const contactForm = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-  contactForm
+  contactForm,
 }

@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 const { unlink } = require('fs')
 const asyncHandler = require('express-async-handler')
 
@@ -8,8 +8,7 @@ const Product = require('../models/product')
 const getProduct = asyncHandler(async (req, res) => {
   const { id } = req.params
   try {
-    const oneProduct = await Product.findById(id)
-      .populate('ingredients')
+    const oneProduct = await Product.findById(id).populate('ingredients')
     if (oneProduct) {
       res.status(200).json(oneProduct)
     } else {
@@ -37,7 +36,7 @@ const createProduct = asyncHandler(async (req, res) => {
   for (let i = 0; i < imagesMeta.length; i++) {
     let newObject = {
       filename: newProduct._id + '_' + i + '.' + imagesMeta[i].ext,
-      priority: imagesMeta[i].priority
+      priority: imagesMeta[i].priority,
     }
     newProduct.images.push(newObject)
   }
@@ -82,7 +81,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         if (updatedProduct) {
           if (imagesMeta) {
             //delete old
-            updatedProduct.images.forEach(e => {
+            updatedProduct.images.forEach((e) => {
               const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
               unlink(filePath, (err) => err && console.log(err))
             })
@@ -91,7 +90,7 @@ const updateProduct = asyncHandler(async (req, res) => {
             for (let i = 0; i < imagesMeta.length; i++) {
               let newObject = {
                 filename: updatedProduct._id + '_' + i + '.' + imagesMeta[i].ext,
-                priority: imagesMeta[i].priority
+                priority: imagesMeta[i].priority,
               }
               updatedProduct.images.push(newObject)
             }
@@ -113,7 +112,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
   try {
     const product = await Product.findByIdAndRemove(id)
     if (product) {
-      product.images.forEach(e => {
+      product.images.forEach((e) => {
         const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
         unlink(filePath, (err) => err && console.log(err))
       })
@@ -132,5 +131,5 @@ module.exports = {
   createProduct,
   addImage,
   updateProduct,
-  deleteProduct
+  deleteProduct,
 }

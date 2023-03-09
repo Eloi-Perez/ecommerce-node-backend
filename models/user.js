@@ -11,18 +11,18 @@ const UserSchema = new mongoose.Schema(
     verification: { type: String, default: randomBytes(64).toString('hex') },
     resetPassword: {
       token: { type: String },
-      expireDate: { type: Date }
+      expireDate: { type: Date },
     },
     active: { type: Boolean, default: false },
     admin: { type: Boolean, default: false },
-    expireAt: { type: Date, default: new Date(Date.now() + (1000 * 60 * 60) * 24 * 7) } // 7 days
+    expireAt: { type: Date, default: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7) }, // 7 days
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 )
 
-UserSchema.statics.hashPassword = password => {
+UserSchema.statics.hashPassword = (password) => {
   return bcrypt.hashSync(password, 10)
 }
 

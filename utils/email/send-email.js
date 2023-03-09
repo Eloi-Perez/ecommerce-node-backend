@@ -8,12 +8,11 @@ const transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASSWORD
+    pass: process.env.EMAIL_PASSWORD,
   },
 })
 
 const sendEmail = async (email, safe) => {
-
   const mailData = {
     from: `Ecommerce-Node-Backend Email Test<${process.env.EMAIL}>`,
     to: email.to,
@@ -23,7 +22,7 @@ const sendEmail = async (email, safe) => {
     // },
     subject: email.subject,
     text: email.message, // plain text version of the message
-    html: html(email.subject, email.message, safe)
+    html: html(email.subject, email.message, safe),
   }
 
   return new Promise((resolve, reject) => {
@@ -35,10 +34,8 @@ const sendEmail = async (email, safe) => {
         console.log(info)
         resolve({ message: 'Sent!' })
       }
-    }
-    )
+    })
   })
-
 }
 
 module.exports = sendEmail

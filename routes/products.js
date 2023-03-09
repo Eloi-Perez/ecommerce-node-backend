@@ -8,7 +8,7 @@ const {
   createProduct,
   addImage,
   updateProduct,
-  deleteProduct
+  deleteProduct,
 } = require('../controllers/products')
 const { upload } = require('../middlewares/disk-storage')
 

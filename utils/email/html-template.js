@@ -1,15 +1,14 @@
-
-const escapeHTML = str =>
+const escapeHTML = (str) =>
   str.replace(
     /[&<>'"]/g,
-    tag =>
-    ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
-    }[tag] || tag)
+    (tag) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;',
+      }[tag] || tag)
   )
 
 const html = (argTitle, argMessage, safe = true) => {
@@ -23,7 +22,7 @@ const html = (argTitle, argMessage, safe = true) => {
   }
   const backgroundColor = '#4287f5'
 
-  return /*html*/`
+  return /*html*/ `
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 

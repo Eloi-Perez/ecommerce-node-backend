@@ -16,7 +16,7 @@ module.exports.localAuth = (req, res, next) => {
 module.exports.jwtAuth = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (error, user, info) => {
     if (error || !user) {
-      return res.status(400).json({ message: "not authorized" })
+      return res.status(400).json({ message: 'not authorized' })
     } else {
       res.locals.user = user
       next()

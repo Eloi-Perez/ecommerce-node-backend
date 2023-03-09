@@ -4,10 +4,10 @@ const IngredientSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     image: { type: String },
-    description: { type: String, required: true }
+    description: { type: String, required: true },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 )
 
