@@ -26,9 +26,14 @@ const createIngredient = asyncHandler(async (req, res) => {
   }
 })
 
-//Add img
-// use the endpoint from products?
-// Check if it works with a single image
+//Add img  (on frontend this is called after Create ingredient)
+const addImage = asyncHandler(async (req, res) => {
+  if (!req.files) {
+    return res.status(400).json({ message: 'error; files not stored' })
+  } else {
+    return res.status(200).json({ message: 'success; files received' })
+  }
+})
 
 //Delete ingredient
 const deleteIngredient = asyncHandler(async (req, res) => {
@@ -50,5 +55,6 @@ const deleteIngredient = asyncHandler(async (req, res) => {
 module.exports = {
   getAllIngredients,
   createIngredient,
+  addImage,
   deleteIngredient,
 }

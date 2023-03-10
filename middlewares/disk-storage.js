@@ -12,10 +12,11 @@ const storage = multer.diskStorage({
 
 const toStore = multer({ storage: storage })
 
-const uploading = toStore.array('images', 12) // (input name, max)
+const uploadingArray = toStore.array('images', 12) // (input-name, max)
+const uploadingSingle = toStore.single('image')
 
-module.exports.upload = (req, res, next) => {
-  uploading(req, res, function (err) {
+const uploadArrayImg = (req, res, next) => {
+  uploadingArray(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.
       return res.status(500).json({ message: err })
@@ -25,4 +26,22 @@ module.exports.upload = (req, res, next) => {
     }
     next()
   })
+}
+
+const uploadImg = (req, res, next) => {
+  uploadingSingle(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json({ message: err })
+    } else if (err) {
+      return res.status(400).json({ message: err })
+    }
+    next()
+  })
+}
+
+
+
+module.exports = {
+  uploadArrayImg,
+  uploadImg,
 }
