@@ -8,7 +8,7 @@ const {
   addImage,
   deleteIngredient,
 } = require('../controllers/ingredients')
-const { uploadImg } = require('../middlewares/disk-storage')
+const { uploadImgIngredients } = require('../middlewares/disk-storage')
 
 const router = express.Router()
 
@@ -17,7 +17,7 @@ router.get('/', getAllIngredients)
 
 //Admin routes
 router.post('/add', jwtAdminAuth, createIngredient)
-router.post('/img', jwtAdminAuth, uploadImg, addImage)
+router.post('/img', jwtAdminAuth, uploadImgIngredients, addImage)
 // router.put('/:id', jwtAdminAuth, productValidate, updateProduct)
 router.delete('/:id', jwtAdminAuth, deleteIngredient)
 

@@ -82,7 +82,7 @@ const updateProduct = asyncHandler(async (req, res) => {
           if (imagesMeta) {
             //delete old
             updatedProduct.images.forEach((e) => {
-              const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
+              const filePath = path.resolve(process.cwd() + '/public/img/products/' + e.filename)
               unlink(filePath, (err) => err && console.log(err))
             })
             //update "images" with new routes
@@ -113,7 +113,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
     const product = await Product.findByIdAndRemove(id)
     if (product) {
       product.images.forEach((e) => {
-        const filePath = path.resolve(process.cwd() + '/public/img/' + e.filename)
+        const filePath = path.resolve(process.cwd() + '/public/img/products/' + e.filename)
         unlink(filePath, (err) => err && console.log(err))
       })
       res.status(200).json({ message: 'Product removed' })

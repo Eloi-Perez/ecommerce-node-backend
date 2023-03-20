@@ -10,7 +10,7 @@ const {
   updateProduct,
   deleteProduct,
 } = require('../controllers/products')
-const { uploadArrayImg } = require('../middlewares/disk-storage')
+const { uploadArrayImgProducts } = require('../middlewares/disk-storage')
 
 const router = express.Router()
 
@@ -20,7 +20,7 @@ router.get('/:id', getProduct)
 
 //Admin routes
 router.post('/add', jwtAdminAuth, createProduct)
-router.post('/img', jwtAdminAuth, uploadArrayImg, addImage)
+router.post('/img', jwtAdminAuth, uploadArrayImgProducts, addImage)
 router.put('/:id', jwtAdminAuth, productValidate, updateProduct)
 router.delete('/:id', jwtAdminAuth, deleteProduct)
 

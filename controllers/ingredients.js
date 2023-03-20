@@ -1,3 +1,5 @@
+const path = require('path')
+const { unlink } = require('fs')
 const asyncHandler = require('express-async-handler')
 
 const Ingredient = require('../models/ingredient')
@@ -28,7 +30,7 @@ const createIngredient = asyncHandler(async (req, res) => {
 
 //Add img  (on frontend this is called after Create ingredient)
 const addImage = asyncHandler(async (req, res) => {
-  if (!req.files) {
+  if (!req.file) {
     return res.status(400).json({ message: 'error; files not stored' })
   } else {
     return res.status(200).json({ message: 'success; files received' })
@@ -41,7 +43,7 @@ const deleteIngredient = asyncHandler(async (req, res) => {
   try {
     const ingredient = await Ingredient.findByIdAndRemove(id)
     if (ingredient) {
-      const filePath = path.resolve(process.cwd() + '/public/img/' + ingredient.image)
+      const filePath = path.resolve(process.cwd() + '/public/img/ingredients/' + ingredient.image)
       unlink(filePath, (err) => err && console.log(err))
       res.status(200).json({ message: 'Ingredient removed' })
     } else {
