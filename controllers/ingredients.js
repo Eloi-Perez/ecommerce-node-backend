@@ -16,9 +16,9 @@ const getAllIngredients = asyncHandler(async (req, res) => {
 
 //Create ingredient
 const createIngredient = asyncHandler(async (req, res) => {
-  const { name, description, imagesMeta } = req.body // imagesMeta = { ext: 'jpg'}
+  const { name, description, imageMeta } = req.body // imageMeta = { ext: 'jpg'}
   const newIngredient = new Ingredient({ name, description })
-  const image = `${newIngredient._id}.${imagesMeta.ext}`
+  const image = `${newIngredient._id}.${imageMeta.ext}`
   newIngredient.image = image
   try {
     await newIngredient.save()
@@ -45,6 +45,7 @@ const deleteIngredient = asyncHandler(async (req, res) => {
     if (ingredient) {
       const filePath = path.resolve(process.cwd() + '/public/img/ingredients/' + ingredient.image)
       unlink(filePath, (err) => err && console.log(err))
+      // TODO delete reference on products ?
       res.status(200).json({ message: 'Ingredient removed' })
     } else {
       res.status(400).json({ message: 'Ingredient not found' })
