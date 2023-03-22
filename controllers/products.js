@@ -22,7 +22,7 @@ const getProduct = asyncHandler(async (req, res) => {
 //Get all products
 const getAllProducts = asyncHandler(async (req, res) => {
   try {
-    const allProducts = await Product.find()
+    const allProducts = await Product.find().populate('ingredients')
     res.status(200).json(allProducts)
   } catch (error) {
     res.status(400).json(error)
