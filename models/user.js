@@ -5,7 +5,7 @@ const { randomBytes } = require('crypto')
 const UserSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
-    surname: { type: String, required: true, trim: true },
+    surname: { type: String, trim: true },
     email: { type: String, required: true, trim: true },
     password: { type: String, required: true, trim: true },
     verification: { type: String, default: randomBytes(64).toString('hex') },
@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema(
     },
     active: { type: Boolean, default: false },
     admin: { type: Boolean, default: false },
-    expireAt: { type: Date, default: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7) }, // 7 days
+    expireAt: { type: Date },
   },
   {
     timestamps: true,

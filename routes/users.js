@@ -7,6 +7,7 @@ const {
   getUser,
   getAllUsers,
   registerUser,
+  fastRegisterUser,
   loginUser,
   resetPassword,
   updateUser,
@@ -20,6 +21,7 @@ const router = express.Router()
 router.get('/verify', verifyEmail)
 router.get('/:id', jwtAuth, checkUser, getUser)
 router.post('/signup', userValidate, registerUser)
+router.post('/registerpromotion', fastRegisterUser)
 router.post('/login', localAuth, loginUser)
 router.post('/reset', resetPassword)
 router.put('/update', localAuth, updateUser)

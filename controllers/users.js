@@ -5,6 +5,7 @@ const { validationResult } = require('express-validator')
 const User = require('../models/user')
 const { generateJWT } = require('../utils/helper')
 const sendEmail = require('../utils/email/send-email')
+const { generatePassword } = require('../utils/generatePassword')
 
 //Verify Email
 const verifyEmail = asyncHandler(async (req, res) => {
@@ -66,7 +67,10 @@ const getAllUsers = asyncHandler(async (req, res) => {
   try {
     const allUsers = await User.find()
     allUsers.forEach((user) => {
-      user.password = ''
+      user.password = undefined
+      user.verification = undefined
+      user.expireAt = undefined
+      user.resetPassword = undefined
     })
     res.status(200).json(allUsers)
   } catch (error) {
@@ -79,7 +83,13 @@ const registerUser = asyncHandler(async (req, res) => {
   const { name, surname, email, password } = req.body
   const validationErrors = validationResult(req)
   const hashedPassword = User.hashPassword(password)
-  const newUser = new User({ name, surname, email, password: hashedPassword })
+  const newUser = new User({
+    name,
+    surname,
+    email,
+    password: hashedPassword,
+    expireAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
+  })
 
   try {
     if (!validationErrors.isEmpty()) {
@@ -111,6 +121,49 @@ const registerUser = asyncHandler(async (req, res) => {
         //   .catch((err) => res.status(400).json({ err }))
         console.log('this is where the email is sent in production') //-------------------testing
         res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }) //-------------------testing
+      }
+    })
+  } catch (error) {
+    res.status(400).json(error)
+  }
+})
+
+//Fast Register User 
+const fastRegisterUser = asyncHandler(async (req, res) => {
+  const { name, email } = req.body
+  const password = generatePassword(6)
+  const hashedPassword = User.hashPassword(password)
+  const newUser = new User({
+    name,
+    email,
+    password: hashedPassword,
+    active: true,
+  })
+
+  try {
+    User.findOne({ email: email }).then((user) => {
+      if (user) {
+        return res.status(400).json({
+          message: 'Email already taken',
+        })
+      } else {
+        newUser.save()
+        // Send Email
+        const content = () => {
+          return /*html*/`Thank you for registering ${name}.<br>
+          This is you promo code: CODEWELCOME<br><br>
+          And this is your autogenerate password: ${password}`
+        }
+        const email = {
+          to: newUser.email,
+          subject: 'Thank you for registering',
+          message: content()
+        }
+        sendEmail(email, false)
+          .then((msg) => res.status(200).json({ name: newUser.name, email: newUser.email }))
+          .catch((err) => res.status(400).json({ err }))
+        // console.log('this is where the email is sent in production') //-------------------testing
+        // res.status(200).json({ name: newUser.name, email: newUser.email }) //-------------------testing
       }
     })
   } catch (error) {
@@ -300,6 +353,7 @@ module.exports = {
   getUser,
   getAllUsers,
   registerUser,
+  fastRegisterUser,
   loginUser,
   resetPassword,
   updateUser,
