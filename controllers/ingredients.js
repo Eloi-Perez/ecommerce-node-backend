@@ -3,6 +3,7 @@ const { unlink } = require('fs')
 const asyncHandler = require('express-async-handler')
 
 const Ingredient = require('../models/ingredient')
+const Product = require('../models/product')
 
 //Get all ingredients
 const getAllIngredients = asyncHandler(async (req, res) => {
@@ -45,13 +46,23 @@ const deleteIngredient = asyncHandler(async (req, res) => {
     if (ingredient) {
       const filePath = path.resolve(process.cwd() + '/public/img/ingredients/' + ingredient.image)
       unlink(filePath, (err) => err && console.log(err))
-      // TODO delete reference on products ?
+      // Delete reference on products
+      console.log(ingredient)
+      const allProducts = await Product.find({ ingredients: id })
+      if (allProducts) {
+        allProducts.forEach(async (_, i) => {
+          await allProducts[i].ingredients.pull(
+            allProducts[i].ingredients.find((el) => el.toString() === id)
+          )
+          await allProducts[i].save()
+        })
+      }
       res.status(200).json({ message: 'Ingredient removed' })
     } else {
       res.status(400).json({ message: 'Ingredient not found' })
     }
   } catch (error) {
-    res.status(400).json({ message: error })
+    res.status(500).json({ message: 'error' })
   }
 })
 
