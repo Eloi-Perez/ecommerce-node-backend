@@ -11,7 +11,7 @@ const getAllIngredients = asyncHandler(async (req, res) => {
     const allIngredients = await Ingredient.find()
     res.status(200).json(allIngredients)
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
@@ -25,14 +25,14 @@ const createIngredient = asyncHandler(async (req, res) => {
     await newIngredient.save()
     res.status(200).json(newIngredient)
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
 //Add img  (on frontend this is called after Create ingredient)
 const addImage = asyncHandler(async (req, res) => {
   if (!req.file) {
-    return res.status(400).json({ message: 'error; files not stored' })
+    return res.status(500).json({ message: 'error; files not stored' })
   } else {
     return res.status(200).json({ message: 'success; files received' })
   }

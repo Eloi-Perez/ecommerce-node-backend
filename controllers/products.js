@@ -25,7 +25,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
     const allProducts = await Product.find().populate('ingredients')
     res.status(200).json(allProducts)
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
@@ -44,14 +44,14 @@ const createProduct = asyncHandler(async (req, res) => {
     await newProduct.save()
     res.status(200).json(newProduct)
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
 //Add img  (on frontend this is called after Create One Product)
 const addImage = asyncHandler(async (req, res) => {
   if (!req.files) {
-    return res.status(400).json({ message: 'error; files not stored' })
+    return res.status(500).json({ message: 'error; files not stored' })
   } else {
     return res.status(200).json({ message: 'success; files received' })
   }
@@ -121,7 +121,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
       res.status(400).json({ message: 'Product not found' })
     }
   } catch (error) {
-    res.status(400).json({ message: error })
+    res.status(500).json({ message: error })
   }
 })
 

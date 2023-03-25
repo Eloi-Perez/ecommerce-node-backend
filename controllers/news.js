@@ -10,7 +10,7 @@ const getAllNews = asyncHandler(async (req, res) => {
     const allNews = await News.find()
     res.status(200).json(allNews)
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
@@ -24,14 +24,14 @@ const createNews = asyncHandler(async (req, res) => {
     await newNews.save()
     res.status(200).json(newNews)
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
 //Add img  (on frontend this is called after Create news)
 const addImage = asyncHandler(async (req, res) => {
   if (!req.file) {
-    return res.status(400).json({ message: 'error; files not stored' })
+    return res.status(500).json({ message: 'error; files not stored' })
   } else {
     return res.status(200).json({ message: 'success; files received' })
   }
@@ -50,7 +50,7 @@ const deleteNews = asyncHandler(async (req, res) => {
       res.status(400).json({ message: 'News not found' })
     }
   } catch (error) {
-    res.status(400).json({ message: error })
+    res.status(500).json({ message: error })
   }
 })
 

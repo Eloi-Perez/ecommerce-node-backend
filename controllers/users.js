@@ -25,7 +25,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
       { new: true },
       (err, updatedUser) => {
         if (err) {
-          console.error(err)
+          // console.error(err)
           res.status(500).json({ err })
         } else {
           if (updatedUser) {
@@ -39,8 +39,8 @@ const verifyEmail = asyncHandler(async (req, res) => {
       }
     )
   } catch (err) {
-    console.error(err)
-    res.status(400).json(err)
+    // console.error(err)
+    res.status(500).json(err)
   }
 })
 
@@ -49,6 +49,7 @@ const getUser = asyncHandler(async (req, res) => {
   const { id } = req.params
   try {
     const user = await User.findById(id)
+    if (!user) res.status(400).json({ message: 'User not found' })
     res.status(200).json({
       id: user._id,
       name: user.name,
@@ -58,7 +59,7 @@ const getUser = asyncHandler(async (req, res) => {
       admin: user.admin,
     })
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
@@ -74,7 +75,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
     })
     res.status(200).json(allUsers)
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
@@ -124,7 +125,7 @@ const registerUser = asyncHandler(async (req, res) => {
       }
     })
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
@@ -167,7 +168,7 @@ const fastRegisterUser = asyncHandler(async (req, res) => {
       }
     })
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
@@ -264,7 +265,7 @@ const resetPassword = asyncHandler(async (req, res) => {
       res.status(400).json({ message: 'Error' })
     }
   } catch (error) {
-    res.status(400).json(error)
+    res.status(500).json(error)
   }
 })
 
@@ -344,7 +345,7 @@ const deleteUser = asyncHandler(async (req, res) => {
       res.status(400).json({ message: 'User not found' })
     }
   } catch (error) {
-    res.status(400).json({ message: error })
+    res.status(500).json({ message: error })
   }
 })
 
