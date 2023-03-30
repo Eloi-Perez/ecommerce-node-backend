@@ -29,10 +29,8 @@ const verifyEmail = asyncHandler(async (req, res) => {
           res.status(500).json({ err })
         } else {
           if (updatedUser) {
-            // TODO: redirect to front-end home page or welcome page
-            res.status(200).redirect('http://google.com/search?q=Nice+Welcome+Page')
+            res.status(200).json({ message: 'Verified!' })
           } else {
-            // TODO: redirect to front-end page with error
             res.status(400).json({ message: 'User not found or User has already been verified' })
           }
         }
@@ -106,22 +104,23 @@ const registerUser = asyncHandler(async (req, res) => {
       } else {
         newUser.save()
         // Send Verification Email
-        // const link = () => {
-        //   return `${process.env.BASE_URL}/users/verify?key=${newUser.verification}`
-        // }
-        // const content = () => {
-        //   return /*html*/`Thank you for registering. <a href=${link()}>Please click here to verify your email</a>`
-        // }
-        // const email = {
-        //   to: newUser.email,
-        //   subject: 'Account verification',
-        //   message: content()
-        // }
-        // sendEmail(email, false)
-        //   .then((msg) => res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }))
-        //   .catch((err) => res.status(400).json({ err }))
-        console.log('this is where the email is sent in production') //-------------------testing
-        res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }) //-------------------testing
+        const link = () => {
+          // In frontend fetch to: `${process.env.BASE_URL}/v0/users/verify?key=${newUser.verification}`
+          return `${process.env.VERIFY_URL}?key=${newUser.verification}`
+        }
+        const content = () => {
+          return /*html*/`Thank you for registering. <a href=${link()}>Please click here to verify your email</a>`
+        }
+        const email = {
+          to: newUser.email,
+          subject: 'Account verification',
+          message: content()
+        }
+        sendEmail(email, false)
+          .then((msg) => res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }))
+          .catch((err) => res.status(400).json({ err }))
+        // console.log('this is where the email is sent in production') //-------------------testing
+        // res.status(200).json({ name: newUser.name, surname: newUser.surname, email: newUser.email }) //-------------------testing
       }
     })
   } catch (error) {
