@@ -106,7 +106,7 @@ const registerUser = asyncHandler(async (req, res) => {
         // Send Verification Email
         const link = () => {
           // In frontend fetch to: `${process.env.BASE_URL}/v0/users/verify?key=${newUser.verification}`
-          return `${process.env.VERIFY_URL}?key=${newUser.verification}`
+          return `${process.env.FRONTEND}/my-account/verify?key=${newUser.verification}`
         }
         const content = () => {
           return /*html*/`Thank you for registering. <a href=${link()}>Please click here to verify your email</a>`
@@ -209,22 +209,22 @@ const resetPassword = asyncHandler(async (req, res) => {
         (err, updatedUser) => {
           if (updatedUser) {
             // Send Reset Email
-            // const link = () => {
-            //   return `http://front-end-page-with-form-to-send-new-password?key=${newToken}`
-            // }
-            // const content = () => {
-            //   return /*html*/`We are sorry you lost your password. <a href=${link()}>Please click here to reset your password</a><br>This link will expire in 1h`
-            // }
-            // const email = {
-            //   to: updatedUser.email,
-            //   subject: 'Password reset',
-            //   message: content()
-            // }
-            // sendEmail(email, false)
-            //     .then((msg) => res.status(200).json({ message: 'Email sent' }))
-            //     .catch((err) => res.status(400).json({ err }))
+            const link = () => {
+              return `${process.env.FRONTEND}/my-account/password-reset?key=${newToken}`
+            }
+            const content = () => {
+              return /*html*/`We are sorry you lost your password. <a href=${link()}>Please click here to reset your password</a><br>This link will expire in 1h`
+            }
+            const email = {
+              to: updatedUser.email,
+              subject: 'Password reset',
+              message: content()
+            }
+            sendEmail(email, false)
+                .then((msg) => res.status(200).json({ message: 'Email sent' }))
+                .catch((err) => res.status(500).json({ message: 'Server error' }))
             console.log('trust me, the email was sent') //-------------------testing
-            res.status(200).json({ message: 'Email sent' }) //-------------------testing
+            // res.status(200).json({ message: 'Email sent' }) //-------------------testing
           } else {
             // User not found -> 200 for security reasons
             res.status(200).json({ message: 'Email sent' })
@@ -247,18 +247,19 @@ const resetPassword = asyncHandler(async (req, res) => {
         const hashedPassword = User.hashPassword(newPassword)
         user.password = hashedPassword
         await user.save()
-        // const content = () => {
-        //   return /*html*/`Your password has been changed.`
-        // }
-        // const email = {
-        //   to: user.email,
-        //   subject: 'Password updated',
-        //   message: content()
-        // }
+        const content = () => {
+          return /*html*/`Your password has been changed.`
+        }
+        const email = {
+          to: user.email,
+          subject: 'Password updated',
+          message: content()
+        }
         console.log('trust me, the email was sent (success new password)') //-------------------testing
-        res.status(200).json({ message: 'success, you should get redirected' }) //-------------------testing
-        // sendEmail(email)
+        // res.status(200).json({ message: 'success, you should get redirected' }) //-------------------testing
+        sendEmail(email)
         // res.status(200).redirect('http://login-page')
+        res.status(200).json({ message: 'Updated!' })
       }
     } else {
       res.status(400).json({ message: 'Error' })
